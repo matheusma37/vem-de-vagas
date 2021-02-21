@@ -65,7 +65,9 @@ $ rails s
 ```
 
 ## Linguagens, Dependências e Libs usadas
-+ []()
++ [Devise](https://github.com/heartcombo/devise)
++ [Simplecov](https://github.com/simplecov-ruby/simplecov)
++ [Shoulda-matchers](https://github.com/thoughtbot/shoulda-matchers)
 
 ## Links de ferramentas externas usadas
 + [Quadro Trello](https://trello.com/b/50tmKggf/vem-de-vagas)

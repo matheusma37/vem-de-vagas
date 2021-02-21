@@ -6,6 +6,8 @@ require File.expand_path('../config/environment', __dir__)
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
 require 'capybara/rspec'
+require 'simplecov'
+SimpleCov.start 'rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -38,6 +40,13 @@ Capybara.register_driver :selenium_chrome_headless do |app|
 end
 
 Capybara.javascript_driver = :selenium_chrome_headless
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
 
 begin
   ActiveRecord::Migration.maintain_test_schema!
