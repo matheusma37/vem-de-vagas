@@ -65,6 +65,7 @@ $ rails s
 ```
 
 ## Linguagens, Dependências e Libs usadas
++ [Capybara](https://github.com/teamcapybara/capybara)
 + [Devise](https://github.com/heartcombo/devise)
 + [Simplecov](https://github.com/simplecov-ruby/simplecov)
 + [Shoulda-matchers](https://github.com/thoughtbot/shoulda-matchers)

@@ -13,8 +13,14 @@
   <body>
     <nav>
       <% if user_signed_in? %>
+        <% if current_user.avatar.attached? %>
+          <%= image_tag current_user.avatar.variant(resize_to_limit: [100, 100]), alt: 'Foto de Perfil' %>
+        <% else %>
+          <%= image_tag('avatar_placeholder.png', size: '100', alt: 'Foto de Perfil') %>
+        <% end %>
+
         <%= current_user.username %>
-        <%= current_user.email %>
+
         <%= link_to 'Sair', destroy_user_session_path, method: :delete %>
       <% else %>
         <%= link_to 'Entrar', new_user_session_path %>
