@@ -4,6 +4,12 @@ pt-BR:
       user:
         one: Usuário
         other: Usuários
+      company:
+        one: Empresa
+        other: Empresas
+      employee_profile:
+        one: 'Perfil de Funcionário'
+        other: 'Perfis de Funcionários'
     attributes:
       user:
         full_name: 'Nome completo'
@@ -13,3 +19,5 @@ pt-BR:
         email: 'E-mail'
         password: 'Senha'
         avatar: 'Foto de perfil'
+      company:
+        email_domain: 'Domínio de email'

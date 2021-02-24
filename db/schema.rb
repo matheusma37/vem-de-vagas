@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_24_160644) do
+ActiveRecord::Schema.define(version: 2021_02_24_164030) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -40,12 +40,20 @@ ActiveRecord::Schema.define(version: 2021_02_24_160644) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "companies", force: :cascade do |t|
+    t.string "email_domain", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "employee_profiles", force: :cascade do |t|
     t.string "employee_code"
     t.string "role"
     t.integer "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "company_id", null: false
+    t.index ["company_id"], name: "index_employee_profiles_on_company_id"
     t.index ["user_id"], name: "index_employee_profiles_on_user_id"
   end
 
@@ -67,5 +75,6 @@ ActiveRecord::Schema.define(version: 2021_02_24_160644) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "employee_profiles", "companies"
   add_foreign_key "employee_profiles", "users"
 end
