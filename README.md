@@ -4,8 +4,8 @@
     * [Principais funcionalidades](#Principais-funcionalidades)
   * [Como rodar a aplicação](#Como-rodar-a-aplicação)
     * [Pré-requisitos](#Dependências-inicias)
-    * [Instalação, Execução e Teste](#Instalação,-Execução-e-Teste)
-  * [Linguagens, Dependências e Libs usadas](#Linguagens,-Dependências-e-Libs-usadas)
+    * [Instalação, Execução e Teste](#Instalação-Execução-e-Teste)
+  * [Linguagens, Dependências e Libs usadas](#Linguagens-Dependências-e-Libs-usadas)
   * [Links de ferramentas externas usadas](#Links-de-ferramentas-externas-usadas)
 ## Descrição
 <p align="justify"> Plataforma simples de oferta e busca de vagas para a área de tecnologia, desenvolvida em Ruby on Rails, como parte do treinamento da turma 5 do programa <a href="https://www.treinadev.com.br">Treinadev</a> da <a href="https://campuscode.com.br">Campus Code</a>.</p>

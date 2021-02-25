@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_24_164030) do
+ActiveRecord::Schema.define(version: 2021_02_25_043556) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -44,6 +44,14 @@ ActiveRecord::Schema.define(version: 2021_02_24_164030) do
     t.string "email_domain", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "name"
+    t.text "description"
+    t.string "cnpj", default: "", null: false
+    t.date "creation_date"
+    t.string "address"
+    t.string "site"
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_companies_on_user_id"
   end
 
   create_table "employee_profiles", force: :cascade do |t|
@@ -75,6 +83,7 @@ ActiveRecord::Schema.define(version: 2021_02_24_164030) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "companies", "users"
   add_foreign_key "employee_profiles", "companies"
   add_foreign_key "employee_profiles", "users"
 end

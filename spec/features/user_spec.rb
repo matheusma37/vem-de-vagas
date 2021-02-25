@@ -42,7 +42,7 @@ feature 'User visits the site' do
       click_on 'Inscrever-se'
     end
 
-    expect(current_path).to eq root_path
+    expect(page).to have_content('Bem vindo! Você realizou seu registro com sucesso.')
     expect(page).to have_css('img[src*="my_profile.jpg"]')
   end
 end

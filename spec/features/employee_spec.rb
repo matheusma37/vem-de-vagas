@@ -2,7 +2,11 @@ require 'rails_helper'
 
 feature 'Employee visits the site' do
   scenario 'and successfully signs up' do
-    Company.create!(email_domain: 'codante.com.br')
+    employee = User.create!(full_name: 'João', username: 'jojo',
+                            email: 'jojo123@codante.com.br', password: '123456',
+                            cpf: '01234567890',
+                            about_me: 'Admin raivoso, gótico e trevoso.')
+    EmployeeProfile.create!(company: Company.last, user: employee)
 
     visit root_path
     click_on 'Entrar'
@@ -32,7 +36,11 @@ feature 'Employee visits the site' do
   end
 
   scenario 'and is assigned to a Company' do
-    company = Company.create!(email_domain: 'codante.com.br')
+    employee = User.create!(full_name: 'João', username: 'jojo',
+                            email: 'jojo123@codante.com.br', password: '123456',
+                            cpf: '01234567890',
+                            about_me: 'Admin raivoso, gótico e trevoso.')
+    EmployeeProfile.create!(company: Company.last, user: employee)
 
     visit root_path
     click_on 'Entrar'
@@ -51,6 +59,6 @@ feature 'Employee visits the site' do
 
     profile = User.last.employee_profile
     expect(profile.company).to be_truthy
-    expect(profile.company).to eql(company)
+    expect(profile.company).to eql(Company.last)
   end
 end
