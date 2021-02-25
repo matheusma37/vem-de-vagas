@@ -21,3 +21,9 @@ pt-BR:
         avatar: 'Foto de perfil'
       company:
         email_domain: 'Domínio de email'
+        name: 'Nome'
+        description: 'Descrição'
+        cnpj: 'CNPJ'
+        creation_date: 'Data de criação'
+        address: 'Endereço'
+        site: 'Site da empresa'

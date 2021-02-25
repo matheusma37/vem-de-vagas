@@ -1,0 +1,8 @@
+<h1><%= @company.name %></h1>
+<h2><%= @company.cnpj %></h2>
+<p><%= @company.description %></p>
+<p><%= "Trabalhando desde: #{l(@company.creation_date, format: :long)}" %></p>
+<p><%= @company.address %></p>
+<p><%= @company.site %></p>
+
+<%= link_to 'Voltar', root_path %>

@@ -1,1 +1,42 @@
 <h1>Edite as informações de sua empresa</h1>
+
+<% if @company.errors.any? %>
+  <div class='alert'>
+    <p>Não foi possível editar a empresa</p>
+    <p>Confira os erros abaixo:</p>
+    <ul>
+      <% @company.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with model: @company do |f| %>
+  <div>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+  <div>
+    <%= f.label :cnpj %>
+    <%= f.text_field :cnpj %>
+  </div>
+  <div>
+    <%= f.label :site %>
+    <%= f.text_field :site %>
+  </div>
+  <div>
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+  </div>
+  <div>
+    <%= f.label :creation_date %>
+    <%= f.date_field :creation_date %>
+  </div>
+  <div>
+    <%= f.label :address %>
+    <%= f.text_field :address %>
+  </div>
+
+  <%= f.submit %>
+<% end %>
