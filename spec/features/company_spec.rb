@@ -62,13 +62,13 @@ feature 'Employee visits the site' do
     end
 
     scenario 'and cnpj and site must be unique' do
-      User.create!(full_name: 'João', username: 'jojo',
-                   email: 'jojo123@codante.com.br', password: '123456',
-                   cpf: '01234567890',
-                   about_me: 'Admin raivoso, gótico e trevoso.')
-
+      user = User.create!(full_name: 'João', username: 'jojo',
+                          email: 'jojo123@codante.com.br', password: '123456',
+                          cpf: '01234567890',
+                          about_me: 'Admin raivoso, gótico e trevoso.')
       Company.create!(email_domain: 'test.com', admin: User.last,
                       site: 'www.codan.te', cnpj: '12.345.678/0009-10')
+      login_as user, scope: :user
 
       visit edit_company_path(Company.first)
       within('form') do
@@ -87,10 +87,11 @@ feature 'Employee visits the site' do
     end
 
     scenario 'and adds logo and cover image' do
-      User.create!(full_name: 'João', username: 'jojo',
-                   email: 'jojo123@codante.com.br', password: '123456',
-                   cpf: '01234567890',
-                   about_me: 'Admin raivoso, gótico e trevoso.')
+      user = User.create!(full_name: 'João', username: 'jojo',
+                          email: 'jojo123@codante.com.br', password: '123456',
+                          cpf: '01234567890',
+                          about_me: 'Admin raivoso, gótico e trevoso.')
+      login_as user, scope: :user
 
       visit edit_company_path(Company.last)
       within('form') do
@@ -110,8 +111,38 @@ feature 'Employee visits the site' do
       expect(page).to have_css('img[src*="cover.png"]')
     end
 
-    scenario 'and only the admin can edit a company' do
-      pending
+    scenario "and only the admin can see the company's edit button" do
+      User.create!(full_name: 'João', username: 'jojo',
+                   email: 'jojo123@codante.com.br', password: '123456',
+                   cpf: '01234567890',
+                   about_me: 'Admin raivoso, gótico e trevoso.')
+      user = User.create!(full_name: 'José', username: 'zeze',
+                          email: 'zeze456@codante.com.br', password: '654321',
+                          cpf: '00123456789',
+                          about_me: 'Carinha do RH.')
+      login_as user, scope: :user
+
+      visit root_path
+      click_on 'Minha Empresa'
+
+      expect(page).not_to have_link('Editar Empresa', href: edit_company_path(user.company))
+    end
+
+    scenario "and a non-admin cannot access the company's edit view" do
+      User.create!(full_name: 'João', username: 'jojo',
+                   email: 'jojo123@codante.com.br', password: '123456',
+                   cpf: '01234567890',
+                   about_me: 'Admin raivoso, gótico e trevoso.')
+      user = User.create!(full_name: 'José', username: 'zeze',
+                          email: 'zeze456@codante.com.br', password: '654321',
+                          cpf: '00123456789',
+                          about_me: 'Carinha do RH.')
+      login_as user, scope: :user
+
+      visit edit_company_path(user.company)
+
+      expect(current_path).to eq(company_path(user.company))
+      expect(page).to have_content('Apenas o administrador pode editar as informações da empresa')
     end
   end
 end

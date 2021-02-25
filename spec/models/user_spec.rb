@@ -7,6 +7,9 @@ RSpec.describe User, type: :model do
                  cpf: '01234567890',
                  about_me: 'Admin raivoso, gótico e trevoso.')
   end
+
+  it { expect(subject.employee?).to be true }
+  it { expect(subject.admin?).to be true }
   it { should have_one_attached(:avatar) }
   it { should delegate_method(:company).to(:employee_profile) }
   it { should delegate_method(:admin?).to(:employee_profile) }
