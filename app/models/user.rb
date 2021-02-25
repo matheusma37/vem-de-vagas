@@ -20,9 +20,7 @@ class User < ApplicationRecord
 
   def add_profile_type
     company = Company.find_by(email_domain: email.split('@').last)
-    company ||= Company.create!(email_domain: email.split('@').last,
-                                admin: self, site: "Não preenchido #{DateTime.now}",
-                                cnpj: "Não preenchido #{DateTime.now}")
+    company ||= Company.create!(email_domain: email.split('@').last, admin: self)
     EmployeeProfile.create(user: self, company: company)
   end
 end

@@ -8,6 +8,8 @@ RSpec.describe Company, type: :model do
                  about_me: 'Admin raivoso, gótico e trevoso.')
     Company.last
   end
+  it { should have_one_attached(:logo) }
+  it { should have_one_attached(:cover) }
   it { should belong_to(:admin) }
   it { should validate_uniqueness_of(:email_domain).case_insensitive }
   it { should allow_value('email.com').for(:email_domain) }

@@ -12,7 +12,8 @@ class CompaniesController < ApplicationController
     if @company.update(params.require(:company)
                               .permit(:name, :description,
                                       :cnpj, :creation_date,
-                                      :address, :site))
+                                      :address, :site,
+                                      :cover, :logo))
       redirect_to @company, notice: 'Empresa atualizada com sucesso!'
     else
       render 'edit'

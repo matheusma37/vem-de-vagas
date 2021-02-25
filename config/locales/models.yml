@@ -27,3 +27,5 @@ pt-BR:
         creation_date: 'Data de criação'
         address: 'Endereço'
         site: 'Site da empresa'
+        logo: 'Logo'
+        cover: 'Foto de capa'

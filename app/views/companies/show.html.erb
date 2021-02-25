@@ -1,7 +1,20 @@
+<% if @company.cover.attached? %>
+  <%= image_tag @company.cover, alt: 'Foto de capa' %>
+<% else %>
+  <%= image_tag('cover_placeholder.png', alt: 'Foto de capa') %>
+<% end %>
+<% if @company.logo.attached? %>
+  <%= image_tag @company.logo, alt: 'Logomarca' %>
+<% else %>
+  <%= image_tag('logo_placeholder.png', alt: 'Logomarca') %>
+<% end %>
+
 <h1><%= @company.name %></h1>
 <h2><%= @company.cnpj %></h2>
 <p><%= @company.description %></p>
-<p><%= "Trabalhando desde: #{l(@company.creation_date, format: :long)}" %></p>
+<% if @company.creation_date %>
+  <p><%= "Trabalhando desde: #{l(@company.creation_date, format: :long)}" %></p>
+<% end %>
 <p><%= @company.address %></p>
 <p><%= @company.site %></p>
 
