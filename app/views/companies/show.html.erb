@@ -35,4 +35,13 @@
   <%= link_to 'Criar Vaga', new_job_opportunity_path %>
 <% end %>
 
+<h3>Vagas</h3>
+<% @job_opportunities.each do |job_opportunity| %>
+  <div>
+    <%= link_to job_opportunity.title, job_opportunity %>
+    <p><%= "Vagas disponíveis: #{job_opportunity.total_job_opportunities}" %></p>
+    <p>Nível: <%= t(job_opportunity.professional_level) %></p>
+  </div>
+<% end %>
+
 <%= link_to 'Voltar', root_path %>

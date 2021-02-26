@@ -8,10 +8,10 @@
 </ul>
 
 <h2>Vagas</h2>
-  <% @job_opportunities.each do |job_opportunity| %>
-    <div>
-      <%= link_to job_opportunity.title, job_opportunity %>
-      <p><%= "Vagas disponíveis: #{job_opportunity.total_job_opportunities}" %></p>
-      <p>Nível: <%= t(job_opportunity.professional_level) %></p>
-    </div>
-  <% end %>
+<% @job_opportunities.each do |job_opportunity| %>
+  <div>
+    <%= link_to job_opportunity.title, job_opportunity %>
+    <p><%= "Vagas disponíveis: #{job_opportunity.total_job_opportunities}" %></p>
+    <p>Nível: <%= t(job_opportunity.professional_level) %></p>
+  </div>
+<% end %>
