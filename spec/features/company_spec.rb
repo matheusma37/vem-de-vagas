@@ -191,7 +191,19 @@ feature 'User visits the site' do
 
       expect(current_path).to eq(root_path)
       expect(page).to have_link('Codante', href: company_path(Company.first))
-      expect(page).to have_link('Codador', href: company_path(Company.last))
+    end
+
+    scenario "and cannot see the company's edit button" do
+      User.create!(full_name: 'João', username: 'jojo',
+                   email: 'jojo123@codante.com.br', password: '123456',
+                   cpf: '01234567890',
+                   about_me: 'Admin raivoso, gótico e trevoso.')
+      Company.first.update!(name: 'Codante', cnpj: '12.345.678/0009-10', site: 'www.codante.com')
+
+      visit root_path
+      click_on 'Codante'
+
+      expect(page).not_to have_link('Editar Empresa', href: edit_company_path(Company.first))
     end
   end
 end
