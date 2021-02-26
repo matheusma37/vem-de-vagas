@@ -6,5 +6,5 @@ Rails.application.routes.draw do
   resources :companies, only: %i[edit update], scope: 'admin'
   resources :companies, only: %i[show]
 
-  resources :job_opportunities, only: %i[new create]
+  resources :job_opportunities, only: %i[show new create]
 end
