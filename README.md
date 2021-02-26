@@ -47,19 +47,15 @@ Entre no repositório
 ```
 $ cd vem-de-vagas/
 ```
-Instale as dependências
+Execute o arquivo de configuração
 ```
 $ bin/setup
-```
-Faça a migração do banco de dados
-```
-$ rails db:migrate
 ```
 Teste o projeto
 ```
 $ bundle exec rspec
 ```
-Para executar o servidor, rode
+Para executar o servidor rode
 ```
 $ rails s
 ```

@@ -86,6 +86,32 @@ feature 'User visits the site' do
       expect(page).to have_content('Site da empresa já está em uso')
     end
 
+    scenario 'and name, cnpj and site cannot stay blank' do
+      user = User.create!(full_name: 'João', username: 'jojo',
+                          email: 'jojo123@codante.com.br', password: '123456',
+                          cpf: '01234567890',
+                          about_me: 'Admin raivoso, gótico e trevoso.')
+      Company.create!(email_domain: 'test.com', admin: User.last,
+                      site: 'www.codan.te', cnpj: '12.345.678/0009-10')
+      login_as user, scope: :user
+
+      visit edit_company_path(Company.first)
+      within('form') do
+        fill_in 'Nome', with: ''
+        fill_in 'CNPJ',	with: ''
+        fill_in 'Descrição', with: 'Empresa fazedora de código'
+        fill_in 'Data de criação', with: '2003-02-01'
+        fill_in 'Endereço', with: 'Rua ABC, nº 007, Pq. Beta, Los Angeles - Acre'
+        fill_in 'Site da empresa', with: ''
+        click_on 'Atualizar Empresa'
+      end
+
+      expect(page).to have_content('Não foi possível editar a empresa')
+      expect(page).to have_content('Nome não pode ficar em branco')
+      expect(page).to have_content('CNPJ não pode ficar em branco')
+      expect(page).to have_content('Site da empresa não pode ficar em branco')
+    end
+
     scenario 'and adds logo and cover image' do
       user = User.create!(full_name: 'João', username: 'jojo',
                           email: 'jojo123@codante.com.br', password: '123456',
@@ -158,8 +184,8 @@ feature 'User visits the site' do
                    email: 'zeze456@codador.com', password: '654321',
                    cpf: '00123456789',
                    about_me: 'Admin dboa, tô sussa na lagoa.')
-      Company.first.update!(name: 'Codante', cnpj: '12.345.678/0009-10')
-      Company.last.update!(name: 'Codador', cnpj: '01.987.654/0003-21')
+      Company.first.update!(name: 'Codante', cnpj: '12.345.678/0009-10', site: 'www.codante.com')
+      Company.last.update!(name: 'Codador', cnpj: '01.987.654/0003-21', site: 'www.codador.com')
 
       visit root_path
 

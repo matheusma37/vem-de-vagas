@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_25_232252) do
+ActiveRecord::Schema.define(version: 2021_02_26_035709) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -65,6 +65,21 @@ ActiveRecord::Schema.define(version: 2021_02_25_232252) do
     t.index ["user_id"], name: "index_employee_profiles_on_user_id"
   end
 
+  create_table "job_opportunities", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description"
+    t.float "max_salary", default: 0.0, null: false
+    t.float "min_salary", default: 0.0, null: false
+    t.integer "professional_level", default: 3, null: false
+    t.date "application_deadline"
+    t.integer "total_job_opportunities", null: false
+    t.integer "status", default: 3, null: false
+    t.integer "company_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_job_opportunities_on_company_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -86,4 +101,5 @@ ActiveRecord::Schema.define(version: 2021_02_25_232252) do
   add_foreign_key "companies", "users"
   add_foreign_key "employee_profiles", "companies"
   add_foreign_key "employee_profiles", "users"
+  add_foreign_key "job_opportunities", "companies"
 end

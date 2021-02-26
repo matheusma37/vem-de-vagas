@@ -1,0 +1,45 @@
+<h1>Crie uma vaga</h1>
+
+<% if @job_opportunity.errors.any? %>
+  <div class='alert'>
+    <p>Não foi possível criar a vaga</p>
+    <p>Confira os erros abaixo:</p>
+    <ul>
+      <% @job_opportunity.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with model: @job_opportunity do |f| %>
+  <div>
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+  </div>
+  <div>
+    <%= f.label :min_salary %>
+    <%= f.number_field :min_salary %>
+  </div>
+  <div>
+    <%= f.label :max_salary %>
+    <%= f.number_field :max_salary %>
+  </div>
+  <div>
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+  </div>
+  <div>
+    <%= f.collection_radio_buttons :professional_level, JobOpportunity.professional_levels, :first, :first %>
+  </div>
+  <div>
+    <%= f.label :total_job_opportunities %>
+    <%= f.number_field :total_job_opportunities %>
+  </div>
+  <div>
+    <%= f.label :application_deadline %>
+    <%= f.date_field :application_deadline %>
+  </div>
+
+  <%= f.submit %>
+<% end %>

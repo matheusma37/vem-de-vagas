@@ -10,6 +10,9 @@ pt-BR:
       employee_profile:
         one: 'Perfil de Funcionário'
         other: 'Perfis de Funcionários'
+      job_opportunity:
+        one: 'Vaga'
+        other: 'Vagas'
     attributes:
       user:
         full_name: 'Nome completo'
@@ -29,3 +32,16 @@ pt-BR:
         site: 'Site da empresa'
         logo: 'Logo'
         cover: 'Foto de capa'
+      job_opportunity:
+        title: 'Título'
+        description: 'Descrição'
+        min_salary: 'Salário mínimo'
+        max_salary: 'Salário máximo'
+        application_deadline: 'Data de encerramento'
+        total_job_opportunities: 'Total de vagas'
+        status: 'Condição'
+        professional_level: 'Nível de senioridade'
+        job_opportunity/professional_level:
+          junior: 'Júnior'
+          pleno: 'Pleno'
+          senior: 'Sênior'
