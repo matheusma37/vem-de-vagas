@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-feature 'Employee visits the site' do
-  describe 'signs up' do
+feature 'User visits the site' do
+  describe 'signs up as employee' do
     scenario 'and is the first to assign to a company' do
       visit root_path
       click_on 'Entrar'
@@ -110,7 +110,9 @@ feature 'Employee visits the site' do
       expect(page).to have_css('img[src*="logo.png"]')
       expect(page).to have_css('img[src*="cover.png"]')
     end
+  end
 
+  describe 'login as employee' do
     scenario "and only the admin can see the company's edit button" do
       User.create!(full_name: 'João', username: 'jojo',
                    email: 'jojo123@codante.com.br', password: '123456',
@@ -143,6 +145,27 @@ feature 'Employee visits the site' do
 
       expect(current_path).to eq(company_path(user.company))
       expect(page).to have_content('Apenas o administrador pode editar as informações da empresa')
+    end
+  end
+
+  describe 'stays not logged' do
+    scenario 'and see the list of companies' do
+      User.create!(full_name: 'João', username: 'jojo',
+                   email: 'jojo123@codante.com.br', password: '123456',
+                   cpf: '01234567890',
+                   about_me: 'Admin raivoso, gótico e trevoso.')
+      User.create!(full_name: 'José', username: 'zeze',
+                   email: 'zeze456@codador.com', password: '654321',
+                   cpf: '00123456789',
+                   about_me: 'Admin dboa, tô sussa na lagoa.')
+      Company.first.update!(name: 'Codante', cnpj: '12.345.678/0009-10')
+      Company.last.update!(name: 'Codador', cnpj: '01.987.654/0003-21')
+
+      visit root_path
+
+      expect(current_path).to eq(root_path)
+      expect(page).to have_link('Codante', href: company_path(Company.first))
+      expect(page).to have_link('Codador', href: company_path(Company.last))
     end
   end
 end
