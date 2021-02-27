@@ -1,4 +1,8 @@
 class JobOpportunitiesController < ApplicationController
+  def show
+    @job_opportunity = JobOpportunity.find(params[:id])
+  end
+
   def new
     @job_opportunity = JobOpportunity.new
   end

@@ -23,7 +23,7 @@
 
         <%= link_to 'Sair', destroy_user_session_path, method: :delete %>
 
-        <% if current_user.employee? %>
+        <% if current_user.as_employee? %>
           <%= link_to 'Minha Empresa', company_path(current_user.company) %>
         <% end %>
 

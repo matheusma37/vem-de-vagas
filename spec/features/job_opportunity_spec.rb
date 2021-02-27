@@ -101,11 +101,11 @@ feature 'A user visits the site' do
       expect(page).to have_content('Salário: R$ 2.500,00 - R$ 4.000,00')
       expect(page).to have_content('Analisar projetos')
       expect(page).to have_content('Pleno')
-      expect(page).to have_content("Vaga disponível até #{Date.today.advance(days: 10)}")
+      expect(page).to have_content("Vaga disponível até #{I18n.l(Date.today.advance(days: 10), format: :long)}")
       expect(page).to have_content('Ativa')
       expect(page).to have_content('Número de vagas disponíveis: 2')
       expect(page).to have_link('Codante', href: company_path(analista.company))
-      expect(page).to have_link('Voltar', href: company_path(analista.company))
+      expect(page).to have_link('Voltar')
     end
   end
 

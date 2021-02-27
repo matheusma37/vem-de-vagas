@@ -16,6 +16,7 @@ FactoryBot.define do
     professional_level { :pleno }
     total_job_opportunities { 2 }
     status { :disable }
+    description { 'Analisar projetos' }
     company { Company.last }
   end
 

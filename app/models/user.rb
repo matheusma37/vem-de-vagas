@@ -16,7 +16,7 @@ class User < ApplicationRecord
   validates :email, uniqueness: { case_sensitive: false }
   validates :email, format: { with: /\A[\d\w+-.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?\z/i }
 
-  def employee?
+  def as_employee?
     !!employee_profile
   end
 

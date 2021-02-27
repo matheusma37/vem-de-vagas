@@ -44,7 +44,7 @@
                                         :professional_level,
                                         job_opportunity.professional_level) %>
     </p>
-    <% if current_user&.employee? %>
+    <% if job_opportunity.company.employee?(current_user) %>
       <p>
         <%= human_attribute_enum(:job_opportunity,
                                 :status,

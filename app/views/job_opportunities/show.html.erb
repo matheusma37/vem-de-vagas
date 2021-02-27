@@ -1,0 +1,21 @@
+<h1><%= @job_opportunity.title %></h1>
+
+<%= "Salário: #{number_to_currency(@job_opportunity.min_salary)} -" +
+    " #{number_to_currency(@job_opportunity.max_salary)}" %>
+<%= @job_opportunity.description %>
+<%= human_attribute_enum(:job_opportunity,
+                          :professional_level,
+                          @job_opportunity.professional_level) %>
+<% unless @job_opportunity.application_deadline.nil? %>
+  <%= "Vaga disponível até #{l(@job_opportunity.application_deadline, format: :long)}" %>
+<% end %>
+
+<% if @job_opportunity.company.employee?(current_user) %>
+  <%= human_attribute_enum(:job_opportunity,
+                          :status,
+                          @job_opportunity.status) %>
+<% end %>
+
+<%= "Número de vagas disponíveis: #{@job_opportunity.total_job_opportunities}" %>
+<%= link_to @job_opportunity.company.name, company_path(@job_opportunity.company) %>
+<%= link_to 'Voltar', :back %>
