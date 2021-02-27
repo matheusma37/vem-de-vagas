@@ -18,8 +18,8 @@
 > Status do Projeto: Em desenvolvimento :warning: :construction_worker:
 
 ### Principais funcionalidades
-- [ ] Funcionário cria conta associada a uma empresa
-- [ ] Funcionário cria vagas
+- [X] Funcionário cria conta associada a uma empresa
+- [X] Funcionário cria vagas
 - [ ] Funcionário avalia candidaturas
 - [ ] Candidato cria conta
 - [ ] Candidato se candidata a uma vaga
@@ -65,6 +65,8 @@ $ rails s
 + [Devise](https://github.com/heartcombo/devise)
 + [Simplecov](https://github.com/simplecov-ruby/simplecov)
 + [Shoulda-matchers](https://github.com/thoughtbot/shoulda-matchers)
++ [FactoryBot](https://github.com/thoughtbot/factory_bot)
++ [Faker](https://github.com/faker-ruby/faker)
 
 ## Links de ferramentas externas usadas
 + [Quadro Trello](https://trello.com/b/50tmKggf/vem-de-vagas)

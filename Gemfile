@@ -32,6 +32,8 @@ end
 
 group :test do
   gem 'capybara', '>= 3.26'
+  gem 'factory_bot_rails'
+  gem 'faker'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', '~> 4.0'
   gem 'simplecov'

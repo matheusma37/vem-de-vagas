@@ -62,12 +62,8 @@ feature 'User visits the site' do
     end
 
     scenario 'and cnpj and site must be unique' do
-      user = User.create!(full_name: 'João', username: 'jojo',
-                          email: 'jojo123@codante.com.br', password: '123456',
-                          cpf: '01234567890',
-                          about_me: 'Admin raivoso, gótico e trevoso.')
-      Company.create!(email_domain: 'test.com', admin: User.last,
-                      site: 'www.codan.te', cnpj: '12.345.678/0009-10')
+      user = create(:user_admin)
+      create(:company)
       login_as user, scope: :user
 
       visit edit_company_path(Company.first)
@@ -87,12 +83,8 @@ feature 'User visits the site' do
     end
 
     scenario 'and name, cnpj and site cannot stay blank' do
-      user = User.create!(full_name: 'João', username: 'jojo',
-                          email: 'jojo123@codante.com.br', password: '123456',
-                          cpf: '01234567890',
-                          about_me: 'Admin raivoso, gótico e trevoso.')
-      Company.create!(email_domain: 'test.com', admin: User.last,
-                      site: 'www.codan.te', cnpj: '12.345.678/0009-10')
+      user = create(:user_admin)
+      create(:company)
       login_as user, scope: :user
 
       visit edit_company_path(Company.first)
@@ -113,10 +105,7 @@ feature 'User visits the site' do
     end
 
     scenario 'and adds logo and cover image' do
-      user = User.create!(full_name: 'João', username: 'jojo',
-                          email: 'jojo123@codante.com.br', password: '123456',
-                          cpf: '01234567890',
-                          about_me: 'Admin raivoso, gótico e trevoso.')
+      user = create(:user_admin)
       login_as user, scope: :user
 
       visit edit_company_path(Company.last)
@@ -140,14 +129,8 @@ feature 'User visits the site' do
 
   describe 'login as employee' do
     scenario "and only the admin can see the company's edit button" do
-      User.create!(full_name: 'João', username: 'jojo',
-                   email: 'jojo123@codante.com.br', password: '123456',
-                   cpf: '01234567890',
-                   about_me: 'Admin raivoso, gótico e trevoso.')
-      user = User.create!(full_name: 'José', username: 'zeze',
-                          email: 'zeze456@codante.com.br', password: '654321',
-                          cpf: '00123456789',
-                          about_me: 'Carinha do RH.')
+      create(:user_admin)
+      user = create(:user_employee)
       login_as user, scope: :user
 
       visit root_path
@@ -157,16 +140,9 @@ feature 'User visits the site' do
     end
 
     scenario "and a non-admin cannot access the company's edit view" do
-      User.create!(full_name: 'João', username: 'jojo',
-                   email: 'jojo123@codante.com.br', password: '123456',
-                   cpf: '01234567890',
-                   about_me: 'Admin raivoso, gótico e trevoso.')
-      user = User.create!(full_name: 'José', username: 'zeze',
-                          email: 'zeze456@codante.com.br', password: '654321',
-                          cpf: '00123456789',
-                          about_me: 'Carinha do RH.')
+      create(:user_admin)
+      user = create(:user_employee)
       login_as user, scope: :user
-
       visit edit_company_path(user.company)
 
       expect(current_path).to eq(company_path(user.company))
@@ -176,32 +152,33 @@ feature 'User visits the site' do
 
   describe 'stays not logged' do
     scenario 'and see the list of companies' do
-      User.create!(full_name: 'João', username: 'jojo',
-                   email: 'jojo123@codante.com.br', password: '123456',
-                   cpf: '01234567890',
-                   about_me: 'Admin raivoso, gótico e trevoso.')
-      User.create!(full_name: 'José', username: 'zeze',
-                   email: 'zeze456@codador.com', password: '654321',
-                   cpf: '00123456789',
-                   about_me: 'Admin dboa, tô sussa na lagoa.')
-      Company.first.update!(name: 'Codante', cnpj: '12.345.678/0009-10', site: 'www.codante.com')
-      Company.last.update!(name: 'Codador', cnpj: '01.987.654/0003-21', site: 'www.codador.com')
+      user1 = create(:user_admin)
+      user2 = create(:user_employee)
+      company1_name = user1.email.split('.')[1].capitalize
+      company2_name = user2.email.split('.')[1].capitalize
+      Company.first.update!(name: company1_name,
+                            cnpj: '12.345.678/0009-10',
+                            site: "www.#{company1_name.downcase}.com")
+      Company.last.update!(name: company2_name,
+                           cnpj: '01.987.654/0003-21',
+                           site: "www.#{company2_name.downcase}.com")
 
       visit root_path
 
       expect(current_path).to eq(root_path)
-      expect(page).to have_link('Codante', href: company_path(Company.first))
+      expect(page).to have_link(company1_name, href: company_path(Company.first))
+      expect(page).to have_link(company2_name, href: company_path(Company.last))
     end
 
     scenario "and cannot see the company's edit button" do
-      User.create!(full_name: 'João', username: 'jojo',
-                   email: 'jojo123@codante.com.br', password: '123456',
-                   cpf: '01234567890',
-                   about_me: 'Admin raivoso, gótico e trevoso.')
-      Company.first.update!(name: 'Codante', cnpj: '12.345.678/0009-10', site: 'www.codante.com')
+      user = create(:user_admin)
+      company_name = user.email.split('.')[1].capitalize
+      Company.first.update!(name: company_name,
+                            cnpj: '12.345.678/0009-10',
+                            site: "www.#{company_name.downcase}.com")
 
       visit root_path
-      click_on 'Codante'
+      click_on company_name
 
       expect(page).not_to have_link('Editar Empresa', href: edit_company_path(Company.first))
     end
