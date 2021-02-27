@@ -238,5 +238,29 @@ feature 'A user visits the site' do
       expect(page).not_to have_content('Vagas disponíveis: 1')
       expect(page).not_to have_content('Nível: Sênior')
     end
+
+    scenario 'and sees the details of a job opportunity' do
+      user = create(:user_admin)
+      Company.first.update!(name: 'Codante', cnpj: '12.345.678/0009-10', site: 'www.codante.com')
+
+      create(:opportunity_programmer)
+      analista = create(:opportunity_analyst, application_deadline: 10.days.since(Date.today), status: :enable)
+      create(:opportunity_manager)
+      login_as user, scope: :user
+
+      visit root_path
+      click_on 'Codante'
+      click_on 'Analista'
+
+      expect(current_path).to eq(job_opportunity_path(analista))
+      expect(page).to have_content('Analista')
+      expect(page).to have_content('Salário: R$ 2.500,00 - R$ 4.000,00')
+      expect(page).to have_content('Analisar projetos')
+      expect(page).to have_content('Pleno')
+      expect(page).to have_content("Vaga disponível até #{I18n.l(Date.today.advance(days: 10), format: :long)}")
+      expect(page).to have_content('Número de vagas disponíveis: 2')
+      expect(page).to have_link('Codante', href: company_path(analista.company))
+      expect(page).to have_link('Voltar')
+    end
   end
 end
