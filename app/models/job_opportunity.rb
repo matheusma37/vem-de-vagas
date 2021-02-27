@@ -1,4 +1,6 @@
 class JobOpportunity < ApplicationRecord
+  after_find :updates_status
+
   belongs_to :company
 
   enum professional_level: { junior: 3, pleno: 6, senior: 9 }
@@ -10,4 +12,10 @@ class JobOpportunity < ApplicationRecord
   validates :professional_level, presence: true
   validates :total_job_opportunities, presence: true
   validates :status, presence: true
+
+  private
+
+  def updates_status
+    disable! if enable? && (!application_deadline.nil? && application_deadline < Date.today)
+  end
 end

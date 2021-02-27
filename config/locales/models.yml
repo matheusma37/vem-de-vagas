@@ -41,7 +41,10 @@ pt-BR:
         total_job_opportunities: 'Total de vagas'
         status: 'Condição'
         professional_level: 'Nível de senioridade'
-        professional_levels:
-          junior: 'Junior'
-          pleno: 'Pleno'
-          senior: 'Senior'
+      job_opportunity/status:
+        enable: 'Ativa'
+        disable: 'Inativa'
+      job_opportunity/professional_level:
+        junior: 'Júnior'
+        pleno: 'Pleno'
+        senior: 'Sênior'

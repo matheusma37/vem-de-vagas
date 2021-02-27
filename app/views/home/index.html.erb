@@ -12,6 +12,9 @@
   <div>
     <%= link_to job_opportunity.title, job_opportunity %>
     <p><%= "Vagas disponíveis: #{job_opportunity.total_job_opportunities}" %></p>
-    <p>Nível: <%= t(job_opportunity.professional_level) %></p>
+    <p>Nível: <%= human_attribute_enum(:job_opportunity,
+                                        :professional_level,
+                                        job_opportunity.professional_level) %>
+    </p>
   </div>
 <% end %>

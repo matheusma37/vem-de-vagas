@@ -3,10 +3,14 @@ class CompaniesController < ApplicationController
 
   def show
     @company = Company.find_by(params[:id])
-    @job_opportunities = @company.job_opportunities
-                                 .where(status: :enable)
-                                 .where('application_deadline >= ? or application_deadline is ?',
-                                        Date.today, nil)
+    @job_opportunities = if current_user&.employee?
+                           @company.job_opportunities
+                         else
+                           @company.job_opportunities
+                                   .where(status: :enable)
+                                   .where('application_deadline >= ? or application_deadline is ?',
+                                          Date.today, nil)
+                         end
   end
 
   def edit
