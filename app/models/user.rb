@@ -1,6 +1,5 @@
 class User < ApplicationRecord
   delegate :company, to: :employee_profile
-  delegate :admin?, to: :employee_profile
 
   after_create :add_profile_type
 
@@ -9,6 +8,7 @@ class User < ApplicationRecord
 
   has_one_attached :avatar
   has_one :employee_profile
+  has_one :candidate_profile
 
   validates :username, :full_name, :cpf, presence: true
   validates :cpf, uniqueness: { case_sensitive: false }
@@ -20,11 +20,22 @@ class User < ApplicationRecord
     !!employee_profile
   end
 
+  def admin?
+    employee_profile&.admin?
+  end
+
   private
 
   def add_profile_type
-    company = Company.find_by(email_domain: email.split('@').last)
-    company ||= Company.create!(email_domain: email.split('@').last, admin: self)
-    EmployeeProfile.create(user: self, company: company)
+    unless ApplicationController.helpers.personal_mail?(email)
+      company = Company.find_by(email_domain: email.split('@').last)
+      company ||= Company.create!(email_domain: email.split('@').last, admin: self)
+      if company.admin == self
+        EmployeeProfile.create(user: self, company: company, role: 'admin')
+      else
+        EmployeeProfile.create(user: self, company: company)
+      end
+    end
+    CandidateProfile.create(user: self)
   end
 end

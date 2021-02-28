@@ -18,8 +18,11 @@
         <% else %>
           <%= image_tag('avatar_placeholder.png', size: '100', alt: 'Foto de Perfil') %>
         <% end %>
-
-        <%= current_user.username %>
+        <% if current_user.as_employee? %>
+          <%= link_to current_user.username, employee_path(current_user) %>
+        <% else %>
+          <%= link_to current_user.username, candidate_path(current_user) %>
+        <% end %>
 
         <%= link_to 'Sair', destroy_user_session_path, method: :delete %>
 

@@ -56,8 +56,8 @@ feature 'User visits the site' do
       expect(page).to have_content('Trabalhando desde: 01 de fevereiro de 2003')
       expect(page).to have_content('Rua ABC, nº 007, Pq. Beta, Los Angeles - Acre')
       expect(page).to have_content('www.codan.te')
-      expect(page).to have_css('img[src*="assets/logo_placeholder"]')
-      expect(page).to have_css('img[src*="assets/cover_placeholder"]')
+      expect(page).to have_css('img[src*="/assets/logo_placeholder"]')
+      expect(page).to have_css('img[src*="/assets/cover_placeholder"]')
       expect(page).to have_link('Voltar', href: root_path)
     end
 

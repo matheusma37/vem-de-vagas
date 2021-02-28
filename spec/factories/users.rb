@@ -18,4 +18,14 @@ FactoryBot.define do
     cpf { '12345678910' }
     about_me { 'Pau pra toda obra.' }
   end
+
+  factory :user_candidate_gabriel, class: User do
+    full_name { 'Gabriel Romero Jr.' }
+    username { 'ga_rome' }
+    email { 'garome73@example.com' }
+    password { '123456' }
+    password_confirmation { '123456' }
+    cpf { '23456178910' }
+    about_me { 'Amo pão e batatinhas.' }
+  end
 end

@@ -4,8 +4,10 @@ class RegistrationsController < Devise::RegistrationsController
   def after_sign_up_path_for(_resource)
     if current_user.admin?
       edit_company_path(current_user.company)
-    else
+    elsif current_user.as_employee?
       root_path
+    else
+      candidate_path(current_user)
     end
   end
 end

@@ -2,11 +2,7 @@ require 'rails_helper'
 
 feature 'Employee visits the site' do
   scenario 'and successfully signs up' do
-    employee = User.create!(full_name: 'João', username: 'jojo',
-                            email: 'jojo123@codante.com.br', password: '123456',
-                            cpf: '01234567890',
-                            about_me: 'Admin raivoso, gótico e trevoso.')
-    EmployeeProfile.create!(company: Company.last, user: employee)
+    create(:user_admin)
 
     visit root_path
     click_on 'Entrar'
@@ -15,10 +11,10 @@ feature 'Employee visits the site' do
     within('form') do
       fill_in 'Nome completo', with: 'João José Silva'
       fill_in 'Usuário', with: 'jojo_avlis'
-      fill_in 'E-mail',	with: 'jojo@codante.com.br'
+      fill_in 'E-mail',	with: 'joaoze@codante.com.br'
       fill_in 'Senha',	with: '123456'
       fill_in 'Confirme sua senha',	with: '123456'
-      fill_in 'CPF',	with: '12345678910'
+      fill_in 'CPF',	with: '02345678910'
       fill_in 'Sobre mim',	with: 'Pessoa feliz e contente, que sorri com os dente.'
       click_on 'Inscrever-se'
     end
@@ -36,11 +32,7 @@ feature 'Employee visits the site' do
   end
 
   scenario 'and is assigned to a Company' do
-    employee = User.create!(full_name: 'João', username: 'jojo',
-                            email: 'jojo123@codante.com.br', password: '123456',
-                            cpf: '01234567890',
-                            about_me: 'Admin raivoso, gótico e trevoso.')
-    EmployeeProfile.create!(company: Company.last, user: employee)
+    create(:user_admin)
 
     visit root_path
     click_on 'Entrar'
@@ -49,10 +41,10 @@ feature 'Employee visits the site' do
     within('form') do
       fill_in 'Nome completo', with: 'João José Silva'
       fill_in 'Usuário', with: 'jojo_avlis'
-      fill_in 'E-mail',	with: 'jojo@codante.com.br'
+      fill_in 'E-mail',	with: 'josejao@codante.com.br'
       fill_in 'Senha',	with: '123456'
       fill_in 'Confirme sua senha',	with: '123456'
-      fill_in 'CPF',	with: '12345678910'
+      fill_in 'CPF',	with: '02345678910'
       fill_in 'Sobre mim',	with: 'Pessoa feliz e contente, que sorri com os dente.'
       click_on 'Inscrever-se'
     end
@@ -60,5 +52,43 @@ feature 'Employee visits the site' do
     profile = User.last.employee_profile
     expect(profile.company).to be_truthy
     expect(profile.company).to eql(Company.last)
+  end
+
+  scenario 'and logs in' do
+    user = create(:user_admin)
+
+    visit root_path
+    click_on 'Entrar'
+
+    within('form') do
+      fill_in 'E-mail',	with: user.email
+      fill_in 'Senha',	with: user.password
+      click_on 'Entrar'
+    end
+
+    expect(current_path).to eq(root_path)
+    expect(page).to have_link('Minha Empresa', href: company_path(user.company))
+  end
+
+  scenario 'open show page' do
+    user = create(:user_admin)
+
+    visit root_path
+    click_on 'Entrar'
+    within('form') do
+      fill_in 'E-mail',	with: user.email
+      fill_in 'Senha',	with: user.password
+      click_on 'Entrar'
+    end
+    click_on user.username
+
+    expect(page).to have_content(user.about_me)
+    expect(page).to have_content(user.full_name)
+    expect(page).to have_content(user.username)
+    expect(page).to have_content(user.cpf)
+    expect(page).to have_content(user.email)
+    expect(page).to have_css('img[src*="assets/avatar_placeholder"]', count: 2)
+    expect(page).to have_link('jojo', href: employee_path(user))
+    expect(page).to have_link('Voltar', href: root_path)
   end
 end

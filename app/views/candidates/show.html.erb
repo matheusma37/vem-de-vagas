@@ -1,0 +1,17 @@
+<% if @candidate.avatar.attached? %>
+  <%= image_tag @candidate.avatar.variant(resize_to_limit: [300, 300]), alt: 'Foto de Perfil' %>
+<% else %>
+  <%= image_tag('avatar_placeholder.png', size: '300', alt: 'Foto de Perfil') %>
+<% end %>
+
+<p><%= @candidate.about_me %></p>
+<h1><%= @candidate.full_name %></h1>
+<p><%= @candidate.username %></p>
+<% if current_user == @candidate %>
+  <p><%= @candidate.cpf %></p>
+<% end %>
+<p><%= @candidate.email %></p>
+<p><%= @candidate.candidate_profile.cellphone_number %></p>
+<p><%= @candidate.candidate_profile.biography %></p>
+
+<%= link_to 'Voltar', root_path %>
