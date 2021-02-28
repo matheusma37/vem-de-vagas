@@ -107,6 +107,69 @@ feature 'A user visits the site' do
       expect(page).to have_link('Codante', href: company_path(analista.company))
       expect(page).to have_link('Voltar')
     end
+
+    scenario 'and edits a job opportunity' do
+      user = create(:user_admin)
+      Company.first.update!(name: 'Codante', cnpj: '12.345.678/0009-10', site: 'www.codante.com')
+      programador = create(:opportunity_programmer)
+      create(:opportunity_analyst)
+      create(:opportunity_manager)
+      login_as user, scope: :user
+
+      visit root_path
+      click_on 'Minha Empresa'
+      click_on 'Programador'
+      click_on 'Editar Vaga'
+
+      within('form') do
+        fill_in 'Título', with: 'Procura-se fazedor de código'
+        fill_in 'Descrição', with: 'Precisa saber fazer código que não me faça questionar a vida'
+        fill_in 'Salário mínimo',	with: '1100.00'
+        fill_in 'Salário máximo',	with: '2000.00'
+        choose 'pleno'
+        fill_in 'Data de encerramento', with: Date.today.advance(days: 10)
+        fill_in 'Total de vagas', with: '10'
+        choose 'enable'
+        click_on 'Atualizar Vaga'
+      end
+
+      expect(current_path).to eq(job_opportunity_path(programador))
+      expect(page).to have_content('Procura-se fazedor de código')
+      expect(page).to have_content('Pleno')
+      expect(page).to have_link('Editar Vaga', href: edit_job_opportunity_path(programador))
+    end
+
+    scenario 'and edits a job opportunity, fields cannot stay blank' do
+      user = create(:user_admin)
+      Company.first.update!(name: 'Codante', cnpj: '12.345.678/0009-10', site: 'www.codante.com')
+      create(:opportunity_programmer)
+      create(:opportunity_analyst)
+      create(:opportunity_manager)
+      login_as user, scope: :user
+
+      visit root_path
+      click_on 'Minha Empresa'
+      click_on 'Programador'
+      click_on 'Editar Vaga'
+
+      within('form') do
+        fill_in 'Título', with: ''
+        fill_in 'Descrição', with: ''
+        fill_in 'Salário mínimo',	with: ''
+        fill_in 'Salário máximo',	with: ''
+        fill_in 'Data de encerramento', with: ''
+        fill_in 'Total de vagas', with: ''
+        click_on 'Atualizar Vaga'
+      end
+
+      expect(page).to have_content('Não foi possível atualizar a vaga')
+      expect(page).to have_content('Título não pode ficar em branco')
+      expect(page).to have_content('Salário máximo não pode ficar em branco')
+      expect(page).to have_content('Salário máximo não é um número')
+      expect(page).to have_content('Salário mínimo não pode ficar em branco')
+      expect(page).to have_content('Salário mínimo não é um número')
+      expect(page).to have_content('Total de vagas não pode ficar em branco')
+    end
   end
 
   describe 'as a visitor' do
@@ -244,9 +307,8 @@ feature 'A user visits the site' do
       Company.first.update!(name: 'Codante', cnpj: '12.345.678/0009-10', site: 'www.codante.com')
 
       create(:opportunity_programmer)
-      analista = create(:opportunity_analyst, application_deadline: 10.days.since(Date.today), status: :enable)
       create(:opportunity_manager)
-      login_as user, scope: :user
+      analista = create(:opportunity_analyst, application_deadline: 10.days.since(Date.today), status: :enable)
 
       visit root_path
       click_on 'Codante'
@@ -261,6 +323,19 @@ feature 'A user visits the site' do
       expect(page).to have_content('Número de vagas disponíveis: 2')
       expect(page).to have_link('Codante', href: company_path(analista.company))
       expect(page).to have_link('Voltar')
+    end
+
+    scenario 'and cannot sees the details of a disabled job opportunity' do
+      create(:user_admin)
+      Company.first.update!(name: 'Codante', cnpj: '12.345.678/0009-10', site: 'www.codante.com')
+
+      create(:opportunity_programmer)
+      create(:opportunity_manager)
+      analista = create(:opportunity_analyst)
+
+      visit job_opportunity_path(analista)
+
+      expect(current_path).to eq(root_path)
     end
   end
 end

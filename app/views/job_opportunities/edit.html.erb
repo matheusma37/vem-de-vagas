@@ -1,8 +1,8 @@
-<h1>Crie uma vaga</h1>
+<h1>Edite sua vaga</h1>
 
 <% if @job_opportunity.errors.any? %>
   <div class='alert'>
-    <p>Não foi possível criar a vaga</p>
+    <p>Não foi possível atualizar a vaga</p>
     <p>Confira os erros abaixo:</p>
     <ul>
       <% @job_opportunity.errors.full_messages.each do |msg| %>
