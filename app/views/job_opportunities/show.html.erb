@@ -1,5 +1,13 @@
 <h1><%= @job_opportunity.title %></h1>
 
+<% if @job_opportunity.enable? %>
+  <%= link_to 'Inativar', disable_job_opportunity_path(@job_opportunity), method: :post %>
+<% end %>
+<% if @job_opportunity.disable? %>
+  <%= link_to 'Ativar', enable_job_opportunity_path(@job_opportunity), method: :post %>
+<% end %>
+
+
 <%= "Salário: #{number_to_currency(@job_opportunity.min_salary)} -" +
     " #{number_to_currency(@job_opportunity.max_salary)}" %>
 <%= @job_opportunity.description %>
@@ -19,4 +27,4 @@
 <%= "Número de vagas disponíveis: #{@job_opportunity.total_job_opportunities}" %>
 <%= link_to 'Editar Vaga', edit_job_opportunity_path(@job_opportunity) %>
 <%= link_to @job_opportunity.company.name, company_path(@job_opportunity.company) %>
-<%= link_to 'Voltar', :back %>
+<%= link_to 'Voltar', company_path(@job_opportunity.company) %>

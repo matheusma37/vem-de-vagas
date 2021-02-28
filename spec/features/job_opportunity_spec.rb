@@ -105,7 +105,8 @@ feature 'A user visits the site' do
       expect(page).to have_content('Ativa')
       expect(page).to have_content('Número de vagas disponíveis: 2')
       expect(page).to have_link('Codante', href: company_path(analista.company))
-      expect(page).to have_link('Voltar')
+      expect(page).to have_link('Inativar', href: disable_job_opportunity_path(analista))
+      expect(page).to have_link('Voltar', href: company_path(analista.company))
     end
 
     scenario 'and edits a job opportunity' do
@@ -169,6 +170,50 @@ feature 'A user visits the site' do
       expect(page).to have_content('Salário mínimo não pode ficar em branco')
       expect(page).to have_content('Salário mínimo não é um número')
       expect(page).to have_content('Total de vagas não pode ficar em branco')
+    end
+
+    scenario 'and enable a job opportunity' do
+      user = create(:user_admin)
+      login_as user, scope: :user
+      Company.first.update!(name: 'Codante', cnpj: '12.345.678/0009-10', site: 'www.codante.com')
+
+      create(:opportunity_programmer)
+      analista = create(:opportunity_analyst, application_deadline: 10.days.since(Date.today))
+      create(:opportunity_manager)
+
+      visit root_path
+      click_on 'Minha Empresa'
+      click_on 'Analista'
+      click_on 'Ativar'
+
+      expect(current_path).to eq(job_opportunity_path(analista))
+      expect(page).to have_content('Ativa')
+      expect(page).to have_link('Inativar', href: disable_job_opportunity_path(analista))
+      expect(page).to have_link('Voltar', href: company_path(analista.company))
+      expect(analista.reload.enable?).to be(true)
+    end
+
+    scenario 'and disable a job opportunity' do
+      user = create(:user_admin)
+      Company.first.update!(name: 'Codante', cnpj: '12.345.678/0009-10', site: 'www.codante.com')
+
+      create(:opportunity_programmer)
+      analista = create(:opportunity_analyst,
+                        application_deadline: 10.days.since(Date.today),
+                        status: :enable)
+      create(:opportunity_manager)
+      login_as user, scope: :user
+
+      visit root_path
+      click_on 'Minha Empresa'
+      click_on 'Analista'
+      click_on 'Inativar'
+
+      expect(current_path).to eq(job_opportunity_path(analista))
+      expect(page).to have_content('Inativa')
+      expect(page).to have_link('Ativar', href: enable_job_opportunity_path(analista))
+      expect(page).to have_link('Voltar', href: company_path(analista.company))
+      expect(analista.reload.disable?).to be(true)
     end
   end
 
@@ -303,7 +348,7 @@ feature 'A user visits the site' do
     end
 
     scenario 'and sees the details of a job opportunity' do
-      user = create(:user_admin)
+      create(:user_admin)
       Company.first.update!(name: 'Codante', cnpj: '12.345.678/0009-10', site: 'www.codante.com')
 
       create(:opportunity_programmer)
@@ -322,7 +367,7 @@ feature 'A user visits the site' do
       expect(page).to have_content("Vaga disponível até #{I18n.l(Date.today.advance(days: 10), format: :long)}")
       expect(page).to have_content('Número de vagas disponíveis: 2')
       expect(page).to have_link('Codante', href: company_path(analista.company))
-      expect(page).to have_link('Voltar')
+      expect(page).to have_link('Voltar', href: company_path(analista.company))
     end
 
     scenario 'and cannot sees the details of a disabled job opportunity' do

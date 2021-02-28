@@ -6,7 +6,7 @@ class CompaniesController < ApplicationController
     @job_opportunities = if @company&.employee?(current_user)
                            @company.job_opportunities
                          else
-                           @company&.job_opportunities
+                           @company.job_opportunities
                                    .where(status: :enable)
                                    .where('application_deadline >= ? or application_deadline is ?',
                                           Date.today, nil)

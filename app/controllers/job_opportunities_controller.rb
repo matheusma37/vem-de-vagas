@@ -1,10 +1,14 @@
 class JobOpportunitiesController < ApplicationController
   def show
     @job_opportunity = JobOpportunity.find(params[:id])
-    return redirect_to root_path unless @job_opportunity
-    return redirect_to root_path if @job_opportunity.disable?
+    unless @job_opportunity&.company&.employee?(current_user)
+      return redirect_to root_path unless @job_opportunity
+      return redirect_to root_path if @job_opportunity.disable?
 
-    redirect_to root_path if @job_opportunity.application_deadline && @job_opportunity.application_deadline < Date.today
+      if @job_opportunity.application_deadline && @job_opportunity.application_deadline < Date.today
+        redirect_to root_path
+      end
+    end
   end
 
   def new
@@ -32,6 +36,18 @@ class JobOpportunitiesController < ApplicationController
     else
       render 'edit'
     end
+  end
+
+  def enable
+    @job_opportunity = JobOpportunity.find(params[:id])
+    @job_opportunity.enable! if @job_opportunity.disable?
+    redirect_to @job_opportunity
+  end
+
+  def disable
+    @job_opportunity = JobOpportunity.find(params[:id])
+    @job_opportunity.disable! if @job_opportunity.enable?
+    redirect_to @job_opportunity
   end
 
   private
