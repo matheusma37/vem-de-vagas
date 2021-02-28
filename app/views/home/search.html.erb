@@ -1,9 +1,13 @@
-<h1>Vem de Vagas</h1>
+<h1>Resultados</h1>
 
 <%= render 'search_form' %>
 
 <div class='companies'>
   <h2>Empresas</h2>
+  <% if @companies.empty? %>
+    <p><strong>Nenhum resultado encontrado...</strong></p>
+  <% end %>
+
   <ul>
     <% @companies.each do |company| %>
       <li><%= link_to company.name, company %></li>
@@ -13,6 +17,10 @@
 
 <div class='job_opportunities'>
   <h2>Vagas</h2>
+  <% if @job_opportunities.empty? %>
+    <p><strong>Nenhum resultado encontrado...</strong></p>
+  <% end %>
+
   <% @job_opportunities.each do |job_opportunity| %>
     <div>
       <%= link_to job_opportunity.title, job_opportunity %>

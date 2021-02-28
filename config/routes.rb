@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   get '/', to: 'home#index'
   root 'home#index'
 
+  get 'search', to: 'home#search'
+
   resources :companies, only: %i[edit update], scope: 'admin'
   resources :companies, only: %i[show]
 

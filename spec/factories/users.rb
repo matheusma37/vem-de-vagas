@@ -5,7 +5,7 @@ FactoryBot.define do
     email { 'jojo123@codante.com.br' }
     password { '123456' }
     password_confirmation { '123456' }
-    cpf { '01234567890' }
+    cpf { Faker::Number.unique.number(digits: 11) }
     about_me { 'Admin raivoso, gótico e trevoso.' }
   end
 
