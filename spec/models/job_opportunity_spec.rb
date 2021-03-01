@@ -12,4 +12,7 @@ RSpec.describe JobOpportunity, type: :model do
   it { should define_enum_for(:status) }
   it { should validate_presence_of(:status) }
   it { should belong_to(:company) }
+  it { should have_many(:job_applications) }
+  it { should have_many(:candidate_profiles).through(:job_applications) }
+  it { should have_many(:candidates).through(:candidate_profiles) }
 end

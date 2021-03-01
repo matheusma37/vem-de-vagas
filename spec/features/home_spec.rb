@@ -60,8 +60,8 @@ feature 'User visits the site' do
 
     expect(current_path).to eq search_path
     within 'div.job_opportunities' do
-      expect(page).to have_link(analista.title, href: job_opportunity_path(analista))
-      expect(page).to have_link(gerente.title, href: job_opportunity_path(gerente))
+      expect(page).to have_link(analista.title, href: company_job_opportunity_path(analista.company, analista))
+      expect(page).to have_link(gerente.title, href: company_job_opportunity_path(gerente.company, gerente))
     end
   end
 
@@ -106,8 +106,8 @@ feature 'User visits the site' do
       expect(page).to have_link('Code.me', href: company_path(Company.last))
     end
     within 'div.job_opportunities' do
-      expect(page).to have_link(programador.title, href: job_opportunity_path(programador))
-      expect(page).to have_link(gerente.title, href: job_opportunity_path(gerente))
+      expect(page).to have_link(programador.title, href: company_job_opportunity_path(programador.company, programador))
+      expect(page).to have_link(gerente.title, href: company_job_opportunity_path(gerente.company, gerente))
     end
   end
 end

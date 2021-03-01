@@ -1,10 +1,10 @@
 <h1><%= @job_opportunity.title %></h1>
 
 <% if @job_opportunity.enable? %>
-  <%= link_to 'Inativar', disable_job_opportunity_path(@job_opportunity), method: :post %>
+  <%= link_to 'Inativar', disable_company_job_opportunity_path(@job_opportunity.company, @job_opportunity), method: :post %>
 <% end %>
 <% if @job_opportunity.disable? %>
-  <%= link_to 'Ativar', enable_job_opportunity_path(@job_opportunity), method: :post %>
+  <%= link_to 'Ativar', enable_company_job_opportunity_path(@job_opportunity.company, @job_opportunity), method: :post %>
 <% end %>
 
 
@@ -27,13 +27,16 @@
 <%= "Número de vagas disponíveis: #{@job_opportunity.total_job_opportunities}" %>
 
 <% unless @job_opportunity.company.employee?(current_user) %>
-  <% if current_user.applied?(@job_opportunity) %>
+  <% if current_user&.applied?(@job_opportunity) %>
     <p>Você já se candidatou a esta vaga</p>
-    <%= link_to 'Detalhes da Candidatura', job_opportunity_job_application_path() %>
+    <%= link_to 'Detalhes da Candidatura',
+                company_job_opportunity_job_application_path(@job_opportunity, @job_opportunity.job_application_for(current_user)) %>
   <% else %>
-    <%= link_to 'Candidatar-se', apply_job_opportunity_path(@job_opportunity), method: :post %>
+    <%= link_to 'Candidatar-se',
+                apply_company_job_opportunity_path(@job_opportunity.company, @job_opportunity),
+                method: :post %>
   <% end %>
 <% end %>
-<%= link_to 'Editar Vaga', edit_job_opportunity_path(@job_opportunity) %>
+<%= link_to 'Editar Vaga', edit_company_job_opportunity_path(@job_opportunity.company, @job_opportunity) %>
 <%= link_to @job_opportunity.company.name, company_path(@job_opportunity.company) %>
 <%= link_to 'Voltar', company_path(@job_opportunity.company) %>

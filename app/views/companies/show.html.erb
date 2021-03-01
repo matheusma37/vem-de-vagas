@@ -32,13 +32,13 @@
 
 
 <% if @company.employee?(current_user) %>
-  <%= link_to 'Criar Vaga', new_job_opportunity_path %>
+  <%= link_to 'Criar Vaga', new_company_job_opportunity_path(@company) %>
 <% end %>
 
 <h3>Vagas</h3>
 <% @job_opportunities.each do |job_opportunity| %>
   <div>
-    <%= link_to job_opportunity.title, job_opportunity %>
+    <%= link_to job_opportunity.title, company_job_opportunity_path(job_opportunity.company, job_opportunity) %>
     <p><%= "Vagas disponíveis: #{job_opportunity.total_job_opportunities}" %></p>
     <p>Nível: <%= human_attribute_enum(:job_opportunity,
                                         :professional_level,

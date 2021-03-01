@@ -3,7 +3,8 @@ class JobOpportunity < ApplicationRecord
 
   belongs_to :company
   has_many :job_applications
-  has_many :candidates, through: :job_applications, source: :candidate_profile
+  has_many :candidate_profiles, through: :job_applications, source: :candidate_profile
+  has_many :candidates, through: :candidate_profiles, source: :user
 
   enum professional_level: { junior: 3, pleno: 6, senior: 9 }
   enum status: { enable: 3, disable: 6 }
@@ -14,6 +15,10 @@ class JobOpportunity < ApplicationRecord
   validates :professional_level, presence: true
   validates :total_job_opportunities, presence: true
   validates :status, presence: true
+
+  def job_application_for(user)
+    job_applications.find_by(candidate_profile: user.candidate_profile)
+  end
 
   private
 

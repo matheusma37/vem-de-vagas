@@ -26,7 +26,7 @@ feature 'A user visits the site' do
       expect(current_path).to eq(company_path(user.company))
       expect(page).to have_content('Procura-se fazedor de código')
       expect(page).to have_content('Pleno')
-      expect(page).to have_link('Criar Vaga', href: new_job_opportunity_path)
+      expect(page).to have_link('Criar Vaga', href: new_company_job_opportunity_path(user.company))
     end
 
     scenario 'and fields cannot stay blank' do
@@ -70,13 +70,13 @@ feature 'A user visits the site' do
       click_on 'Minha Empresa'
 
       expect(current_path).to eq(company_path(Company.first))
-      expect(page).to have_link('Programador', href: job_opportunity_path(programador))
+      expect(page).to have_link('Programador', href: company_job_opportunity_path(programador.company, programador))
       expect(page).to have_content('Vagas disponíveis: 4')
       expect(page).to have_content('Nível: Júnior')
-      expect(page).to have_link('Analista', href: job_opportunity_path(analista))
+      expect(page).to have_link('Analista', href: company_job_opportunity_path(analista.company, analista))
       expect(page).to have_content('Vagas disponíveis: 2')
       expect(page).to have_content('Nível: Pleno')
-      expect(page).to have_link('Gerente de projetos', href: job_opportunity_path(gerente))
+      expect(page).to have_link('Gerente de projetos', href: company_job_opportunity_path(gerente.company, gerente))
       expect(page).to have_content('Vagas disponíveis: 1')
       expect(page).to have_content('Nível: Sênior')
       expect(page).to have_content('Habilitada', count: 1)
@@ -96,7 +96,7 @@ feature 'A user visits the site' do
       click_on 'Minha Empresa'
       click_on 'Analista'
 
-      expect(current_path).to eq(job_opportunity_path(analista))
+      expect(current_path).to eq(company_job_opportunity_path(analista.company, analista))
       expect(page).to have_content('Analista')
       expect(page).to have_content('Salário: R$ 2.500,00 - R$ 4.000,00')
       expect(page).to have_content('Analisar projetos')
@@ -105,7 +105,7 @@ feature 'A user visits the site' do
       expect(page).to have_content('Habilitada')
       expect(page).to have_content('Número de vagas disponíveis: 2')
       expect(page).to have_link('Codante', href: company_path(analista.company))
-      expect(page).to have_link('Inativar', href: disable_job_opportunity_path(analista))
+      expect(page).to have_link('Inativar', href: disable_company_job_opportunity_path(analista.company, analista))
       expect(page).to have_link('Voltar', href: company_path(analista.company))
     end
 
@@ -134,10 +134,11 @@ feature 'A user visits the site' do
         click_on 'Atualizar Vaga'
       end
 
-      expect(current_path).to eq(job_opportunity_path(programador))
+      expect(current_path).to eq(company_job_opportunity_path(programador.company, programador))
       expect(page).to have_content('Procura-se fazedor de código')
       expect(page).to have_content('Pleno')
-      expect(page).to have_link('Editar Vaga', href: edit_job_opportunity_path(programador))
+      expect(page).to have_link('Editar Vaga',
+                                href: edit_company_job_opportunity_path(programador.company, programador))
     end
 
     scenario 'and edits a job opportunity, fields cannot stay blank' do
@@ -186,9 +187,9 @@ feature 'A user visits the site' do
       click_on 'Analista'
       click_on 'Ativar'
 
-      expect(current_path).to eq(job_opportunity_path(analista))
+      expect(current_path).to eq(company_job_opportunity_path(analista.company, analista))
       expect(page).to have_content('Habilitada')
-      expect(page).to have_link('Inativar', href: disable_job_opportunity_path(analista))
+      expect(page).to have_link('Inativar', href: disable_company_job_opportunity_path(analista.company, analista))
       expect(page).to have_link('Voltar', href: company_path(analista.company))
       expect(analista.reload.enable?).to be(true)
     end
@@ -209,9 +210,9 @@ feature 'A user visits the site' do
       click_on 'Analista'
       click_on 'Inativar'
 
-      expect(current_path).to eq(job_opportunity_path(analista))
+      expect(current_path).to eq(company_job_opportunity_path(analista.company, analista))
       expect(page).to have_content('Desabilitada')
-      expect(page).to have_link('Ativar', href: enable_job_opportunity_path(analista))
+      expect(page).to have_link('Ativar', href: enable_company_job_opportunity_path(analista.company, analista))
       expect(page).to have_link('Voltar', href: company_path(analista.company))
       expect(analista.reload.disable?).to be(true)
     end
@@ -228,13 +229,13 @@ feature 'A user visits the site' do
       visit root_path
 
       expect(current_path).to eq(root_path)
-      expect(page).to have_link('Programador', href: job_opportunity_path(programador))
+      expect(page).to have_link('Programador', href: company_job_opportunity_path(programador.company, programador))
       expect(page).to have_content('Vagas disponíveis: 4')
       expect(page).to have_content('Nível: Júnior')
-      expect(page).to have_link('Analista', href: job_opportunity_path(analista))
+      expect(page).to have_link('Analista', href: company_job_opportunity_path(analista.company, analista))
       expect(page).to have_content('Vagas disponíveis: 2')
       expect(page).to have_content('Nível: Pleno')
-      expect(page).to have_link('Gerente de projetos', href: job_opportunity_path(gerente))
+      expect(page).to have_link('Gerente de projetos', href: company_job_opportunity_path(gerente.company, gerente))
       expect(page).to have_content('Vagas disponíveis: 1')
       expect(page).to have_content('Nível: Sênior')
     end
@@ -249,13 +250,13 @@ feature 'A user visits the site' do
       visit root_path
 
       expect(current_path).to eq(root_path)
-      expect(page).to have_link('Programador', href: job_opportunity_path(programador))
+      expect(page).to have_link('Programador', href: company_job_opportunity_path(programador.company, programador))
       expect(page).to have_content('Vagas disponíveis: 4')
       expect(page).to have_content('Nível: Júnior')
-      expect(page).to have_link('Analista', href: job_opportunity_path(analista))
+      expect(page).to have_link('Analista', href: company_job_opportunity_path(analista.company, analista))
       expect(page).to have_content('Vagas disponíveis: 2')
       expect(page).to have_content('Nível: Pleno')
-      expect(page).not_to have_link('Gerente de projetos', href: job_opportunity_path(gerente))
+      expect(page).not_to have_link('Gerente de projetos', href: company_job_opportunity_path(gerente.company, gerente))
       expect(page).not_to have_content('Vagas disponíveis: 1')
       expect(page).not_to have_content('Nível: Sênior')
     end
@@ -270,13 +271,13 @@ feature 'A user visits the site' do
       visit root_path
 
       expect(current_path).to eq(root_path)
-      expect(page).to have_link('Programador', href: job_opportunity_path(programador))
+      expect(page).to have_link('Programador', href: company_job_opportunity_path(programador.company, programador))
       expect(page).to have_content('Vagas disponíveis: 4')
       expect(page).to have_content('Nível: Júnior')
-      expect(page).to have_link('Analista', href: job_opportunity_path(analista))
+      expect(page).to have_link('Analista', href: company_job_opportunity_path(analista.company, analista))
       expect(page).to have_content('Vagas disponíveis: 2')
       expect(page).to have_content('Nível: Pleno')
-      expect(page).not_to have_link('Gerente de projetos', href: job_opportunity_path(gerente))
+      expect(page).not_to have_link('Gerente de projetos', href: company_job_opportunity_path(gerente.company, gerente))
       expect(page).not_to have_content('Vagas disponíveis: 1')
       expect(page).not_to have_content('Nível: Sênior')
     end
@@ -292,13 +293,13 @@ feature 'A user visits the site' do
       click_on 'Codante'
 
       expect(current_path).to eq(company_path(Company.first))
-      expect(page).to have_link('Programador', href: job_opportunity_path(programador))
+      expect(page).to have_link('Programador', href: company_job_opportunity_path(programador.company, programador))
       expect(page).to have_content('Vagas disponíveis: 4')
       expect(page).to have_content('Nível: Júnior')
-      expect(page).to have_link('Analista', href: job_opportunity_path(analista))
+      expect(page).to have_link('Analista', href: company_job_opportunity_path(analista.company, analista))
       expect(page).to have_content('Vagas disponíveis: 2')
       expect(page).to have_content('Nível: Pleno')
-      expect(page).to have_link('Gerente de projetos', href: job_opportunity_path(gerente))
+      expect(page).to have_link('Gerente de projetos', href: company_job_opportunity_path(gerente.company, gerente))
       expect(page).to have_content('Vagas disponíveis: 1')
       expect(page).to have_content('Nível: Sênior')
     end
@@ -314,13 +315,13 @@ feature 'A user visits the site' do
       click_on 'Codante'
 
       expect(current_path).to eq(company_path(Company.first))
-      expect(page).to have_link('Programador', href: job_opportunity_path(programador))
+      expect(page).to have_link('Programador', href: company_job_opportunity_path(programador.company, programador))
       expect(page).to have_content('Vagas disponíveis: 4')
       expect(page).to have_content('Nível: Júnior')
-      expect(page).to have_link('Analista', href: job_opportunity_path(analista))
+      expect(page).to have_link('Analista', href: company_job_opportunity_path(analista.company, analista))
       expect(page).to have_content('Vagas disponíveis: 2')
       expect(page).to have_content('Nível: Pleno')
-      expect(page).not_to have_link('Gerente de projetos', href: job_opportunity_path(gerente))
+      expect(page).not_to have_link('Gerente de projetos', href: company_job_opportunity_path(gerente.company, gerente))
       expect(page).not_to have_content('Vagas disponíveis: 1')
       expect(page).not_to have_content('Nível: Sênior')
     end
@@ -329,7 +330,7 @@ feature 'A user visits the site' do
       create(:user_admin)
       gerente = create(:opportunity_manager)
 
-      visit job_opportunity_path(gerente)
+      visit company_job_opportunity_path(gerente.company, gerente)
 
       expect(current_path).to eq(root_path)
     end
@@ -345,13 +346,13 @@ feature 'A user visits the site' do
       click_on 'Codante'
 
       expect(current_path).to eq(company_path(Company.first))
-      expect(page).to have_link('Programador', href: job_opportunity_path(programador))
+      expect(page).to have_link('Programador', href: company_job_opportunity_path(programador.company, programador))
       expect(page).to have_content('Vagas disponíveis: 4')
       expect(page).to have_content('Nível: Júnior')
-      expect(page).to have_link('Analista', href: job_opportunity_path(analista))
+      expect(page).to have_link('Analista', href: company_job_opportunity_path(analista.company, analista))
       expect(page).to have_content('Vagas disponíveis: 2')
       expect(page).to have_content('Nível: Pleno')
-      expect(page).not_to have_link('Gerente de projetos', href: job_opportunity_path(gerente))
+      expect(page).not_to have_link('Gerente de projetos', href: company_job_opportunity_path(gerente.company, gerente))
       expect(page).not_to have_content('Vagas disponíveis: 1')
       expect(page).not_to have_content('Nível: Sênior')
     end
@@ -368,7 +369,7 @@ feature 'A user visits the site' do
       click_on 'Codante'
       click_on 'Analista'
 
-      expect(current_path).to eq(job_opportunity_path(analista))
+      expect(current_path).to eq(company_job_opportunity_path(analista.company, analista))
       expect(page).to have_content('Analista')
       expect(page).to have_content('Salário: R$ 2.500,00 - R$ 4.000,00')
       expect(page).to have_content('Analisar projetos')
@@ -387,7 +388,7 @@ feature 'A user visits the site' do
       create(:opportunity_manager)
       analista = create(:opportunity_analyst)
 
-      visit job_opportunity_path(analista)
+      visit company_job_opportunity_path(analista.company, analista)
 
       expect(current_path).to eq(root_path)
     end
