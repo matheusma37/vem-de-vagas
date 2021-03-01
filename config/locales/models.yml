@@ -8,11 +8,17 @@ pt-BR:
         one: Empresa
         other: Empresas
       employee_profile:
-        one: 'Perfil de Funcionário'
-        other: 'Perfis de Funcionários'
+        one: 'Funcionário'
+        other: 'Funcionários'
       job_opportunity:
         one: 'Vaga'
         other: 'Vagas'
+      candidate_profile:
+        one: 'Candidato'
+        other: 'Candidatos'
+      user:
+        one: 'Usuário'
+        other: 'Usuários'
     attributes:
       user:
         full_name: 'Nome completo'
@@ -42,9 +48,15 @@ pt-BR:
         status: 'Condição'
         professional_level: 'Nível de senioridade'
       job_opportunity/status:
-        enable: 'Ativa'
-        disable: 'Inativa'
+        enable: 'Habilitada'
+        disable: 'Desabilitada'
       job_opportunity/professional_level:
         junior: 'Júnior'
         pleno: 'Pleno'
         senior: 'Sênior'
+      employee_profile:
+        role: 'Papel'
+        employee_code: 'Código de funcionário'
+      candidate_profile:
+        biography: 'Biografia'
+        cellphone_number: 'Número de celular'

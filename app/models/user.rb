@@ -10,6 +10,8 @@ class User < ApplicationRecord
   has_one :employee_profile
   has_one :candidate_profile
 
+  accepts_nested_attributes_for :candidate_profile
+
   validates :username, :full_name, :cpf, presence: true
   validates :cpf, uniqueness: { case_sensitive: false }
   validates :cpf, format: { with: /([0-9]{3}\.[0-9]{3}\.[0-9]{3}-[0-9]{2}|[0-9]{11})/ }

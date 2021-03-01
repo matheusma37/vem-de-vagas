@@ -28,6 +28,6 @@ FactoryBot.define do
     total_job_opportunities { 1 }
     status { :enable }
     company { Company.last }
-    application_deadline { 1.days.ago }
+    application_deadline { 10.days.ago }
   end
 end

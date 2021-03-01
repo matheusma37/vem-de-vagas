@@ -79,8 +79,8 @@ feature 'A user visits the site' do
       expect(page).to have_link('Gerente de projetos', href: job_opportunity_path(gerente))
       expect(page).to have_content('Vagas disponíveis: 1')
       expect(page).to have_content('Nível: Sênior')
-      expect(page).to have_content('Ativa', count: 1)
-      expect(page).to have_content('Inativa', count: 2)
+      expect(page).to have_content('Habilitada', count: 1)
+      expect(page).to have_content('Desabilitada', count: 2)
     end
 
     scenario 'and sees the details of a job opportunity' do
@@ -102,7 +102,7 @@ feature 'A user visits the site' do
       expect(page).to have_content('Analisar projetos')
       expect(page).to have_content('Pleno')
       expect(page).to have_content("Vaga disponível até #{I18n.l(Date.today.advance(days: 10), format: :long)}")
-      expect(page).to have_content('Ativa')
+      expect(page).to have_content('Habilitada')
       expect(page).to have_content('Número de vagas disponíveis: 2')
       expect(page).to have_link('Codante', href: company_path(analista.company))
       expect(page).to have_link('Inativar', href: disable_job_opportunity_path(analista))
@@ -187,7 +187,7 @@ feature 'A user visits the site' do
       click_on 'Ativar'
 
       expect(current_path).to eq(job_opportunity_path(analista))
-      expect(page).to have_content('Ativa')
+      expect(page).to have_content('Habilitada')
       expect(page).to have_link('Inativar', href: disable_job_opportunity_path(analista))
       expect(page).to have_link('Voltar', href: company_path(analista.company))
       expect(analista.reload.enable?).to be(true)
@@ -210,7 +210,7 @@ feature 'A user visits the site' do
       click_on 'Inativar'
 
       expect(current_path).to eq(job_opportunity_path(analista))
-      expect(page).to have_content('Inativa')
+      expect(page).to have_content('Desabilitada')
       expect(page).to have_link('Ativar', href: enable_job_opportunity_path(analista))
       expect(page).to have_link('Voltar', href: company_path(analista.company))
       expect(analista.reload.disable?).to be(true)

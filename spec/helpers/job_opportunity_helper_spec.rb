@@ -25,13 +25,13 @@ describe JobOpportunityHelper do
         :job_opportunity,
         :status,
         :enable
-      ).should eql('Ativa')
+      ).should eql('Habilitada')
 
       helper.human_attribute_enum(
         :job_opportunity,
         :status,
         :disable
-      ).should eql('Inativa')
+      ).should eql('Desabilitada')
     end
   end
 end
