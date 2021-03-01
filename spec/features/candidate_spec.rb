@@ -85,25 +85,41 @@ feature 'Candidate visits the site' do
     click_on 'Editar Perfil'
 
     within('form') do
-      fill_in 'Nome completo', with: 'Gabbriel Romero Jr.'
-      fill_in 'Usuário', with: 'gab_rom'
-      fill_in 'CPF',	with: '12355678910'
-      fill_in 'Sobre mim',	with: 'Amo pão, batatinhas e chocolate.'
-      fill_in 'Número de celular',	with: '22 999999999'
-      fill_in 'Biografia',	with: 'Já disse que amo pão, batatinhas e chocolate?'
+      fill_in 'Nome completo', with: ''
+      fill_in 'Usuário', with: ''
+      fill_in 'CPF',	with: ''
+      fill_in 'Sobre mim',	with: ''
+      fill_in 'Número de celular',	with: ''
+      fill_in 'Biografia',	with: ''
       click_on 'Atualizar Usuário'
     end
 
-    user.reload
-    expect(page).to have_content(user.about_me)
-    expect(page).to have_content(user.full_name)
-    expect(page).to have_content(user.username)
-    expect(page).to have_content(user.cpf)
-    expect(page).to have_content(user.email)
-    expect(page).to have_content(user.candidate_profile.biography)
-    expect(page).to have_content(user.candidate_profile.cellphone_number)
-    expect(page).to have_css('img[src*="assets/avatar_placeholder"]', count: 2)
-    expect(current_path).to eq(candidate_path(user))
-    expect(page).to have_link('Voltar', href: root_path)
+    expect(page).to have_content('Usuário não pode ficar em branco')
+    expect(page).to have_content('Nome completo não pode ficar em branco')
+    expect(page).to have_content('CPF não pode ficar em branco')
+    expect(page).to have_content('CPF não é válido')
+  end
+
+  scenario 'applies to a job opportunity' do
+    create(:user_admin)
+    Company.last.update!(name: 'Codante',
+                         cnpj: '01.987.654/0003-21',
+                         site: 'www.codante.com')
+    programador = create(:opportunity_programmer)
+    create(:opportunity_analyst, status: :enable)
+    create(:opportunity_manager, application_deadline: Date.today)
+
+    user = create(:user_candidate_gabriel)
+    login_as user, scope: :user
+
+    visit root_path
+    click_on 'Codante'
+    click_on programador.title
+    click_on 'Candidatar-se'
+
+    expect(page).to have_content('Sua candidatura já foi enviada, aguarde por uma resposta')
+    expect(page).to have_content('Você já se candidatou a esta vaga')
+    expect(page).to have_link('Detalhes da Candidatura', href: application_job_opportunity_path(Application.last))
+    expect(page).not_to have_link('Candidatar-se', href: apply_job_opportunity_path(programador))
   end
 end

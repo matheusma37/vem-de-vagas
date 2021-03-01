@@ -3,35 +3,35 @@ require 'rails_helper'
 describe JobOpportunityHelper do
   context '#human_attribute_enum' do
     it 'translates JobOpportunity enum attributes' do
-      helper.human_attribute_enum(
-        :job_opportunity,
-        :professional_level,
-        :junior
-      ).should eql('Júnior')
+      expect(helper.human_attribute_enum(
+               :job_opportunity,
+               :professional_level,
+               :junior
+             )).to eql('Júnior')
 
-      helper.human_attribute_enum(
-        :job_opportunity,
-        :professional_level,
-        :pleno
-      ).should eql('Pleno')
+      expect(helper.human_attribute_enum(
+               :job_opportunity,
+               :professional_level,
+               :pleno
+             )).to eql('Pleno')
 
-      helper.human_attribute_enum(
-        :job_opportunity,
-        :professional_level,
-        :senior
-      ).should eql('Sênior')
+      expect(helper.human_attribute_enum(
+               :job_opportunity,
+               :professional_level,
+               :senior
+             )).to eql('Sênior')
 
-      helper.human_attribute_enum(
-        :job_opportunity,
-        :status,
-        :enable
-      ).should eql('Habilitada')
+      expect(helper.human_attribute_enum(
+               :job_opportunity,
+               :status,
+               :enable
+             )).to eql('Habilitada')
 
-      helper.human_attribute_enum(
-        :job_opportunity,
-        :status,
-        :disable
-      ).should eql('Desabilitada')
+      expect(helper.human_attribute_enum(
+               :job_opportunity,
+               :status,
+               :disable
+             )).to eql('Desabilitada')
     end
   end
 end

@@ -71,3 +71,6 @@ $ rails s
 ## Links de ferramentas externas usadas
 + [Quadro Trello](https://trello.com/b/50tmKggf/vem-de-vagas)
 + [Telas Figma](https://www.figma.com/file/vfUotRBP88yCW6j6nDUfF2/Vem-de-Vagas?node-id=0%3A1)
+
+## Ferramenta executando no heroku
+[Vem-de-Vagas](https://vem-de-vagas.herokuapp.com)

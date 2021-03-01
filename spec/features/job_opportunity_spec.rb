@@ -325,6 +325,15 @@ feature 'A user visits the site' do
       expect(page).not_to have_content('Nível: Sênior')
     end
 
+    scenario 'and cannot access job opportunities out of deadline' do
+      create(:user_admin)
+      gerente = create(:opportunity_manager)
+
+      visit job_opportunity_path(gerente)
+
+      expect(current_path).to eq(root_path)
+    end
+
     scenario 'only see job opportunities of a company that are still on deadline' do
       create(:user_admin)
       Company.first.update!(name: 'Codante', cnpj: '12.345.678/0009-10', site: 'www.codante.com')
