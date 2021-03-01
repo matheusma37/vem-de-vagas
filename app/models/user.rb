@@ -1,6 +1,4 @@
 class User < ApplicationRecord
-  delegate :company, to: :employee_profile
-
   after_create :add_profile_type
 
   devise :database_authenticatable, :registerable,
@@ -8,8 +6,10 @@ class User < ApplicationRecord
 
   has_one_attached :avatar
   has_one :employee_profile
+  has_one :company, through: :employee_profile
   has_one :candidate_profile
 
+  accepts_nested_attributes_for :employee_profile
   accepts_nested_attributes_for :candidate_profile
 
   validates :username, :full_name, :cpf, presence: true

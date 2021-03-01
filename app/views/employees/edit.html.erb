@@ -1,18 +1,18 @@
 <h1>Edite Seu Perfil</h1>
 
-<% if @candidate.errors.any? %>
+<% if @employee.errors.any? %>
   <div class='alert'>
     <p>Não foi possível editar seu perfil</p>
     <p>Confira os erros abaixo:</p>
     <ul>
-      <% @candidate.errors.full_messages.each do |msg| %>
+      <% @employee.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
       <% end %>
     </ul>
   </div>
 <% end %>
 
-<%= form_with model: @candidate, url: candidate_path(@candidate) do |f| %>
+<%= form_with model: @employee, url: employee_path(@employee) do |f| %>
   <div>
     <%= f.label :avatar %>
     <%= f.file_field :avatar %>
@@ -33,14 +33,14 @@
     <%= f.label :cpf %>
     <%= f.text_field :cpf %>
   </div>
-  <%= f.fields_for @candidate.candidate_profile do |profile_f| %>
+  <%= f.fields_for @employee.employee_profile do |profile_f| %>
     <div>
-      <%= profile_f.label :cellphone_number %>
-      <%= profile_f.telephone_field :cellphone_number %>
+      <%= profile_f.label :role %>
+      <%= profile_f.text_field :role %>
     </div>
     <div>
-      <%= profile_f.label :biography %>
-      <%= profile_f.text_area :biography %>
+      <%= profile_f.label :employee_code %>
+      <%= profile_f.text_field :employee_code %>
     </div>
   <% end %>
 

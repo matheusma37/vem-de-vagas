@@ -11,7 +11,9 @@ RSpec.describe User, type: :model do
   it { expect(subject.as_employee?).to be true }
   it { expect(subject.admin?).to be true }
   it { should have_one_attached(:avatar) }
-  it { should delegate_method(:company).to(:employee_profile) }
+  it { should have_one(:company) }
+  it { should have_one(:employee_profile) }
+  it { should have_one(:candidate_profile) }
   it { should delegate_method(:admin?).to(:employee_profile) }
   it { should validate_presence_of(:username) }
   it { should validate_presence_of(:full_name) }

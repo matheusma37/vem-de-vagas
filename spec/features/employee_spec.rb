@@ -91,4 +91,41 @@ feature 'Employee visits the site' do
     expect(page).to have_link('jojo', href: employee_path(user))
     expect(page).to have_link('Voltar', href: root_path)
   end
+
+  scenario 'edits the profile' do
+    user = create(:user_admin)
+
+    visit root_path
+    click_on 'Entrar'
+    within('form') do
+      fill_in 'E-mail',	with: user.email
+      fill_in 'Senha',	with: user.password
+      click_on 'Entrar'
+    end
+
+    click_on user.username
+    click_on 'Editar Perfil'
+
+    within('form') do
+      fill_in 'Nome completo', with: 'João José Silva e Santos'
+      fill_in 'Usuário', with: 'josilsan'
+      fill_in 'CPF',	with: '02345678910'
+      fill_in 'Sobre mim',	with: 'Gosto de rock e de cachorrinhos.'
+      fill_in 'Código de funcionário',	with: '191738'
+      fill_in 'Papel',	with: 'Gerente'
+      click_on 'Atualizar Usuário'
+    end
+
+    user.reload
+    expect(page).to have_content(user.about_me)
+    expect(page).to have_content(user.full_name)
+    expect(page).to have_content(user.username)
+    expect(page).to have_content(user.cpf)
+    expect(page).to have_content(user.email)
+    expect(page).to have_content(user.candidate_profile.biography)
+    expect(page).to have_content(user.candidate_profile.cellphone_number)
+    expect(page).to have_css('img[src*="assets/avatar_placeholder"]', count: 2)
+    expect(current_path).to eq(employee_path(user))
+    expect(page).to have_link('Voltar', href: root_path)
+  end
 end
