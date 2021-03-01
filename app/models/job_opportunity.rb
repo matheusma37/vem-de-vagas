@@ -2,6 +2,8 @@ class JobOpportunity < ApplicationRecord
   after_find :updates_status
 
   belongs_to :company
+  has_many :job_applications
+  has_many :candidates, through: :job_applications, source: :candidate_profile
 
   enum professional_level: { junior: 3, pleno: 6, senior: 9 }
   enum status: { enable: 3, disable: 6 }

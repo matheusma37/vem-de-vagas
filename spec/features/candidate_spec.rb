@@ -119,7 +119,8 @@ feature 'Candidate visits the site' do
 
     expect(page).to have_content('Sua candidatura já foi enviada, aguarde por uma resposta')
     expect(page).to have_content('Você já se candidatou a esta vaga')
-    expect(page).to have_link('Detalhes da Candidatura', href: application_job_opportunity_path(Application.last))
+    expect(page).to have_link('Detalhes da Candidatura',
+                              href: job_opportunity_job_application_path(JobApplication.last))
     expect(page).not_to have_link('Candidatar-se', href: apply_job_opportunity_path(programador))
   end
 end

@@ -50,6 +50,12 @@ class JobOpportunitiesController < ApplicationController
     redirect_to @job_opportunity
   end
 
+  def apply
+    job_opportunity = JobOpportunity.find(params[:id])
+    JobApplication.create(candidate_profile: current_user.candidate_profile, job_opportunity: job_opportunity)
+    redirect_to job_opportunity, notice: 'Sua candidatura já foi enviada, aguarde por uma resposta'
+  end
+
   private
 
   def job_opportunity_params

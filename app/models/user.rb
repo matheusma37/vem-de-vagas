@@ -26,6 +26,10 @@ class User < ApplicationRecord
     employee_profile&.admin?
   end
 
+  def applied?(job_opportunity)
+    candidate_profile.applied?(job_opportunity)
+  end
+
   private
 
   def add_profile_type
