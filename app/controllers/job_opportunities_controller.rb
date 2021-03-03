@@ -3,14 +3,8 @@ class JobOpportunitiesController < ApplicationController
 
   def show
     @job_opportunity = JobOpportunity.find(params[:id])
-    unless @job_opportunity&.company&.employee?(current_user)
-      return redirect_to root_path unless @job_opportunity
-      return redirect_to root_path if @job_opportunity.disable?
-
-      if @job_opportunity.application_deadline && @job_opportunity.application_deadline < Date.today
-        redirect_to root_path
-      end
-    end
+    return redirect_to root_path if !@job_opportunity&.company&.employee?(current_user) && @job_opportunity.nil?
+    return redirect_to root_path if !@job_opportunity&.company&.employee?(current_user) && @job_opportunity.disable?
   end
 
   def new
@@ -63,6 +57,8 @@ class JobOpportunitiesController < ApplicationController
 
   def apply
     job_opportunity = JobOpportunity.find(params[:id])
+    return redirect_to company_path(job_opportunity.company) if job_opportunity.company.employee?(current_user)
+
     JobApplication.create(candidate_profile: current_user.candidate_profile, job_opportunity: job_opportunity)
     redirect_to company_job_opportunity_path(job_opportunity.company, job_opportunity),
                 notice: 'Sua candidatura já foi enviada, aguarde por uma resposta'

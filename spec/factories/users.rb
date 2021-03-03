@@ -28,4 +28,24 @@ FactoryBot.define do
     cpf { '23456178910' }
     about_me { 'Amo pão e batatinhas.' }
   end
+
+  factory :user_candidate_pedro, class: User do
+    full_name { 'Pedro Oliveira Alves' }
+    username { 'pedroca01' }
+    email { 'pedroca01@example.com' }
+    password { '123456' }
+    password_confirmation { '123456' }
+    cpf { '23561789104' }
+    about_me { 'Maior leitor de prefácios que já existiu.' }
+  end
+
+  factory :user_candidate_paulo, class: User do
+    full_name { 'Paulo da Silva Leite' }
+    username { 'paulo_silva89' }
+    email { 'paulo.silva89@example.com' }
+    password { '123456' }
+    password_confirmation { '123456' }
+    cpf { '23456187910' }
+    about_me { 'Sem legenda.' }
+  end
 end

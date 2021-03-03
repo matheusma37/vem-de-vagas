@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'A user visits the site' do
+feature 'An user visits the site' do
   describe 'as a employee' do
     scenario 'and creates a job opportunity' do
       user = create(:user_admin)

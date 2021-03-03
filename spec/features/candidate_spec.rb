@@ -99,34 +99,4 @@ feature 'Candidate visits the site' do
     expect(page).to have_content('CPF não pode ficar em branco')
     expect(page).to have_content('CPF não é válido')
   end
-
-  scenario 'and applies to a job opportunity' do
-    create(:user_admin)
-    Company.last.update!(name: 'Codante',
-                         cnpj: '01.987.654/0003-21',
-                         site: 'www.codante.com')
-    programador = create(:opportunity_programmer)
-    create(:opportunity_analyst, status: :enable)
-    create(:opportunity_manager, application_deadline: Date.today)
-
-    user = create(:user_candidate_gabriel)
-    login_as user, scope: :user
-
-    visit root_path
-    click_on 'Codante'
-    click_on programador.title
-    click_on 'Candidatar-se'
-
-    job_a = JobApplication.last
-    expect(page).to have_content('Sua candidatura já foi enviada, aguarde por uma resposta')
-    expect(page).to have_content('Você já se candidatou a esta vaga')
-    expect(page).to have_link('Detalhes da Candidatura',
-                              href: company_job_opportunity_job_application_path(
-                                job_a.job_opportunity.company,
-                                job_a.job_opportunity,
-                                job_a
-                              ))
-    expect(page).not_to have_link('Candidatar-se',
-                                  href: apply_company_job_opportunity_path(programador.company, programador))
-  end
 end

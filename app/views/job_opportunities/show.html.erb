@@ -30,13 +30,26 @@
   <% if current_user&.applied?(@job_opportunity) %>
     <p>Você já se candidatou a esta vaga</p>
     <%= link_to 'Detalhes da Candidatura',
-                company_job_opportunity_job_application_path(@job_opportunity, @job_opportunity.job_application_for(current_user)) %>
+                company_job_opportunity_job_application_path(@job_opportunity.company,
+                                                             @job_opportunity,
+                                                             @job_opportunity.job_application_for(current_user)) %>
   <% else %>
     <%= link_to 'Candidatar-se',
                 apply_company_job_opportunity_path(@job_opportunity.company, @job_opportunity),
                 method: :post %>
   <% end %>
 <% end %>
+
+<% if @job_opportunity.company.employee?(current_user) %>
+  <h2>Candidaturas</h2>
+  <% @job_opportunity.candidates.each do |candidate| %>
+    <%= link_to candidate.full_name,
+                company_job_opportunity_job_application_path(@job_opportunity.company,
+                                                             @job_opportunity,
+                                                             @job_opportunity.job_application_for(candidate)) %>
+  <% end %>
+<% end %>
+
 <%= link_to 'Editar Vaga', edit_company_job_opportunity_path(@job_opportunity.company, @job_opportunity) %>
 <%= link_to @job_opportunity.company.name, company_path(@job_opportunity.company) %>
 <%= link_to 'Voltar', company_path(@job_opportunity.company) %>
