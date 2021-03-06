@@ -3,6 +3,7 @@ class JobOpportunitiesController < ApplicationController
 
   def show
     @job_opportunity = JobOpportunity.find(params[:id])
+    @company = @job_opportunity.company
     return redirect_to root_path if !@job_opportunity&.company&.employee?(current_user) && @job_opportunity.nil?
     return redirect_to root_path if !@job_opportunity&.company&.employee?(current_user) && @job_opportunity.disable?
   end

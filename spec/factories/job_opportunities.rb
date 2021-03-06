@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :opportunity_programmer, class: JobOpportunity do
     title { 'Programador' }
-    max_salary { 1000.00 }
-    min_salary { 3000.00 }
+    max_salary { 3000.00 }
+    min_salary { 1000.00 }
     professional_level { :junior }
     total_job_opportunities { 4 }
     status { :enable }

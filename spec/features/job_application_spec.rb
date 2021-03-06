@@ -17,7 +17,8 @@ feature 'User visits the site' do
       click_on programador.title
 
       expect(current_path).not_to have_link('Candidatar-se',
-                                            href: apply_company_job_opportunity_path(programador.company, programador))
+                                            href: apply_company_job_opportunity_path(programador.company,
+                                                                                     programador))
     end
 
     scenario 'and list the job applications for a job opportunity' do
@@ -27,9 +28,12 @@ feature 'User visits the site' do
       gabriel = create(:user_candidate_gabriel)
       pedro = create(:user_candidate_pedro)
       paulo = create(:user_candidate_paulo)
-      appl_gabriel = JobApplication.create!(candidate_profile: gabriel.candidate_profile, job_opportunity: programador)
-      appl_pedro = JobApplication.create!(candidate_profile: pedro.candidate_profile, job_opportunity: programador)
-      appl_paulo = JobApplication.create!(candidate_profile: paulo.candidate_profile, job_opportunity: programador)
+      appl_gabriel = JobApplication.create!(candidate_profile: gabriel.candidate_profile,
+                                            job_opportunity: programador)
+      appl_pedro = JobApplication.create!(candidate_profile: pedro.candidate_profile,
+                                          job_opportunity: programador)
+      appl_paulo = JobApplication.create!(candidate_profile: paulo.candidate_profile,
+                                          job_opportunity: programador)
       login_as user, scope: :user
 
       visit root_path
@@ -38,14 +42,44 @@ feature 'User visits the site' do
 
       expect(current_path).to eq(company_job_opportunity_path(programador.company, programador))
       expect(page).to have_link(gabriel.full_name,
-                                href: company_job_opportunity_job_application_path(programador.company, programador,
+                                href: company_job_opportunity_job_application_path(programador.company,
+                                                                                   programador,
                                                                                    appl_gabriel))
       expect(page).to have_link(pedro.full_name,
-                                href: company_job_opportunity_job_application_path(programador.company, programador,
+                                href: company_job_opportunity_job_application_path(programador.company,
+                                                                                   programador,
                                                                                    appl_pedro))
       expect(page).to have_link(paulo.full_name,
-                                href: company_job_opportunity_job_application_path(programador.company, programador,
+                                href: company_job_opportunity_job_application_path(programador.company,
+                                                                                   programador,
                                                                                    appl_paulo))
+    end
+
+    scenario 'and shows details of an application for a job opportunity' do
+      user = create(:user_admin)
+      Company.last.update!(name: 'Codante',
+                           cnpj: '01.987.654/0003-21',
+                           site: 'www.codante.com')
+      programador = create(:opportunity_programmer, min_salary: 1000, max_salary: 3000)
+      gabriel = create(:user_candidate_gabriel)
+      gabriel.candidate_profile.update!(cellphone_number: '00999999999', biography: 'Sei Rails')
+      JobApplication.create!(candidate_profile: gabriel.candidate_profile,
+                             job_opportunity: programador)
+
+      login_as user, scope: :user
+
+      visit root_path
+      click_on 'Minha Empresa'
+      click_on programador.title
+      click_on gabriel.full_name
+
+      expect(page).to have_content("Vaga: #{programador.title} - #{programador.company.name}")
+      expect(page).to have_content('Faixa salarial: R$ 1.000,00 - R$ 3.000,00')
+      expect(page).to have_content("Número de vagas disponíveis: #{programador.total_job_opportunities}")
+      expect(page).to have_content("Candidato: #{gabriel.full_name}")
+      expect(page).to have_content(gabriel.candidate_profile.biography)
+      expect(page).to have_content(gabriel.email)
+      expect(page).to have_content('(00) 99999-9999')
     end
   end
 
@@ -80,16 +114,19 @@ feature 'User visits the site' do
                                     href: apply_company_job_opportunity_path(programador.company, programador))
     end
 
-    scenario 'and cannot list the job applications for a job opportunity' do
+    scenario 'and cannot list the job applications for a job opportunity of a company' do
       create(:user_admin)
       Company.first.update!(name: 'Codante', cnpj: '12.345.678/0009-10', site: 'www.codante.com')
       programador = create(:opportunity_programmer)
       gabriel = create(:user_candidate_gabriel)
       pedro = create(:user_candidate_pedro)
       paulo = create(:user_candidate_paulo)
-      appl_gabriel = JobApplication.create!(candidate_profile: gabriel.candidate_profile, job_opportunity: programador)
-      appl_pedro = JobApplication.create!(candidate_profile: pedro.candidate_profile, job_opportunity: programador)
-      appl_paulo = JobApplication.create!(candidate_profile: paulo.candidate_profile, job_opportunity: programador)
+      appl_gabriel = JobApplication.create!(candidate_profile: gabriel.candidate_profile,
+                                            job_opportunity: programador)
+      appl_pedro = JobApplication.create!(candidate_profile: pedro.candidate_profile,
+                                          job_opportunity: programador)
+      appl_paulo = JobApplication.create!(candidate_profile: paulo.candidate_profile,
+                                          job_opportunity: programador)
       login_as gabriel, scope: :user
 
       visit root_path
@@ -98,18 +135,60 @@ feature 'User visits the site' do
 
       expect(current_path).to eq(company_job_opportunity_path(programador.company, programador))
       expect(page).not_to have_link(gabriel.full_name,
-                                    href: company_job_opportunity_job_application_path(programador.company, programador,
+                                    href: company_job_opportunity_job_application_path(programador.company,
+                                                                                       programador,
                                                                                        appl_gabriel))
       expect(page).not_to have_link(pedro.full_name,
-                                    href: company_job_opportunity_job_application_path(programador.company, programador,
+                                    href: company_job_opportunity_job_application_path(programador.company,
+                                                                                       programador,
                                                                                        appl_pedro))
       expect(page).not_to have_link(paulo.full_name,
-                                    href: company_job_opportunity_job_application_path(programador.company, programador,
+                                    href: company_job_opportunity_job_application_path(programador.company,
+                                                                                       programador,
                                                                                        appl_paulo))
       expect(page).to have_content('Você já se candidatou a esta vaga')
       expect(page).to have_link('Detalhes da Candidatura',
-                                href: company_job_opportunity_job_application_path(programador.company, programador,
+                                href: company_job_opportunity_job_application_path(programador.company,
+                                                                                   programador,
                                                                                    appl_gabriel))
+    end
+
+    scenario 'and lists applications for job opportunities' do
+      create(:user_admin)
+      Company.last.update!(name: 'Codante',
+                           cnpj: '01.987.654/0003-21',
+                           site: 'www.codante.com')
+      programador = create(:opportunity_programmer)
+      analista = create(:opportunity_analyst, status: :enable)
+      gerente = create(:opportunity_manager, application_deadline: Date.today)
+      gabriel = create(:user_candidate_gabriel)
+      gabriel_programador = JobApplication.create!(candidate_profile: gabriel.candidate_profile,
+                                                   job_opportunity: programador)
+      gabriel_analista = JobApplication.create!(candidate_profile: gabriel.candidate_profile,
+                                                job_opportunity: analista)
+      gabriel_gerente = JobApplication.create!(candidate_profile: gabriel.candidate_profile,
+                                               job_opportunity: gerente)
+
+      login_as gabriel, scope: :user
+
+      visit root_path
+      click_on gabriel.username
+
+      expect(page).to have_content("Vaga: #{programador.title} - #{programador.company.name}")
+      expect(page).to have_link('Detalhes da Candidatura',
+                                href: company_job_opportunity_job_application_path(programador.company,
+                                                                                   programador,
+                                                                                   gabriel_programador))
+      expect(page).to have_content("Vaga: #{analista.title} - #{analista.company.name}")
+      expect(page).to have_link('Detalhes da Candidatura',
+                                href: company_job_opportunity_job_application_path(analista.company,
+                                                                                   analista,
+                                                                                   gabriel_analista))
+      expect(page).to have_content("Vaga: #{gerente.title} - #{gerente.company.name}")
+      expect(page).to have_link('Detalhes da Candidatura',
+                                href: company_job_opportunity_job_application_path(gerente.company,
+                                                                                   gerente,
+                                                                                   gabriel_gerente))
     end
   end
 
@@ -138,9 +217,12 @@ feature 'User visits the site' do
       gabriel = create(:user_candidate_gabriel)
       pedro = create(:user_candidate_pedro)
       paulo = create(:user_candidate_paulo)
-      appl_gabriel = JobApplication.create!(candidate_profile: gabriel.candidate_profile, job_opportunity: programador)
-      appl_pedro = JobApplication.create!(candidate_profile: pedro.candidate_profile, job_opportunity: programador)
-      appl_paulo = JobApplication.create!(candidate_profile: paulo.candidate_profile, job_opportunity: programador)
+      appl_gabriel = JobApplication.create!(candidate_profile: gabriel.candidate_profile,
+                                            job_opportunity: programador)
+      appl_pedro = JobApplication.create!(candidate_profile: pedro.candidate_profile,
+                                          job_opportunity: programador)
+      appl_paulo = JobApplication.create!(candidate_profile: paulo.candidate_profile,
+                                          job_opportunity: programador)
 
       visit root_path
       click_on 'Codante'
@@ -148,13 +230,16 @@ feature 'User visits the site' do
 
       expect(current_path).to eq(company_job_opportunity_path(programador.company, programador))
       expect(page).not_to have_link(gabriel.full_name,
-                                    href: company_job_opportunity_job_application_path(programador.company, programador,
+                                    href: company_job_opportunity_job_application_path(programador.company,
+                                                                                       programador,
                                                                                        appl_gabriel))
       expect(page).not_to have_link(pedro.full_name,
-                                    href: company_job_opportunity_job_application_path(programador.company, programador,
+                                    href: company_job_opportunity_job_application_path(programador.company,
+                                                                                       programador,
                                                                                        appl_pedro))
       expect(page).not_to have_link(paulo.full_name,
-                                    href: company_job_opportunity_job_application_path(programador.company, programador,
+                                    href: company_job_opportunity_job_application_path(programador.company,
+                                                                                       programador,
                                                                                        appl_paulo))
       expect(page).not_to have_content('Você já se candidatou a esta vaga')
       expect(page).not_to have_link('Detalhes da Candidatura')

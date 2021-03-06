@@ -1,0 +1,22 @@
+<h1>
+  <%= "Vaga: #{@job_opportunity.title} - " %>
+  <%= link_to @job_opportunity.company.name, company_path(@job_opportunity.company) %>
+</h1>
+<p>
+  <%= "Faixa salarial: #{number_to_currency(@job_opportunity.min_salary)} - #{number_to_currency(@job_opportunity.max_salary)}" %>
+</p>
+<p>
+  <%= "Número de vagas disponíveis: #{@job_opportunity.total_job_opportunities}" %>
+</p>
+<p>
+  <%= "Candidato: #{@candidate.user.full_name}" %>
+</p>
+<p>
+  <%= @candidate.biography %>
+</p>
+<p>
+  <%= @candidate.user.email %>
+</p>
+<p>
+  <%= number_to_phone(@candidate.cellphone_number, pattern: /(\d{2})(\d{5})(\d{4})$/, area_code: true) %>
+</p>

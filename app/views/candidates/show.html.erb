@@ -14,5 +14,17 @@
 <p><%= @candidate.candidate_profile.cellphone_number %></p>
 <p><%= @candidate.candidate_profile.biography %></p>
 
+<% @candidate.candidate_profile.job_applications.each do |job_application| %>
+  <div>
+    <p>
+      <%= "Vaga: #{job_application.job_opportunity.title} - #{job_application.job_opportunity.company.name}" %>
+    </p>
+    <%= link_to 'Detalhes da Candidatura',
+        company_job_opportunity_job_application_path(job_application.job_opportunity.company,
+                                                     job_application.job_opportunity,
+                                                     job_application) %>
+  </div>
+<% end %>
+
 <%= link_to 'Editar Perfil', edit_candidate_path(@candidate) %>
 <%= link_to 'Voltar', root_path %>
