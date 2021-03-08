@@ -1,4 +1,6 @@
 class ResponsesController < ApplicationController
+  before_action :authenticate_user!
+
   def refusal
     refusal_response = RefusalResponse.new(refusal_response_params)
     company = Company.find(params[:company_id])
