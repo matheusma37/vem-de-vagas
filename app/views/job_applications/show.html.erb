@@ -8,6 +8,9 @@
   <% if @job_application.refused? %>
     <%= human_attribute_enum(:job_application, :status, @job_application.status) %>
   <% end %>
+  <% if @job_application.responded? %>
+    <%= human_attribute_enum(:job_application, :status, @job_application.status) %>
+  <% end %>
 </p>
 
 <p>
@@ -29,9 +32,9 @@
   <%= number_to_phone(@candidate.cellphone_number, pattern: /(\d{2})(\d{5})(\d{4})$/, area_code: true) %>
 </p>
 
-<% unless @job_application.refused? %>
+<% unless @job_application.replied? %>
   <% if @job_opportunity.company.employee?(current_user) %>
-    <button onclick='showCandidatureRefusalForm()'>Recusar Candidatura</button>
+    <button onclick='showForm("candidature-refusal-form")'>Recusar Candidatura</button>
     <%= form_with model: @refusal_response,
               url: refusal_company_job_opportunity_job_application_response_path(
                 @job_opportunity.company,
@@ -42,6 +45,30 @@
       <div>
         <%= f.label :reason %>
         <%= f.text_area :reason %>
+      </div>
+      <%= f.submit 'Enviar' %>
+    <% end %>
+
+    <button onclick='showForm("candidature-proposal-form")'>Fazer Proposta</button>
+    <%= form_with model: @proposal_response,
+              url: proposal_company_job_opportunity_job_application_response_path(
+                @job_opportunity.company,
+                @job_opportunity,
+                @job_application
+              ), style: 'display: none;', id: 'candidature-proposal-form' do |f| %>
+      <div>
+        <%= f.label :message %>
+        <%= f.text_area :message %>
+      </div>
+      <div>
+        <%= f.label :salary_proposal %>
+        <%= f.number_field :salary_proposal,
+        value: number_to_currency(f.object.salary_proposal.to_f),
+        step: :any %>
+      </div>
+      <div>
+        <%= f.label :start_date %>
+        <%= f.date_field :start_date %>
       </div>
       <%= f.submit 'Enviar' %>
     <% end %>

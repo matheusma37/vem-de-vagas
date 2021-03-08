@@ -25,6 +25,9 @@ pt-BR:
       refusal_response:
         one: 'Resposta de Recusa'
         other: 'Respostas de Recusa'
+      proposal_response:
+        one: 'Resposta de Proposta'
+        other: 'Respostas de Proposta'
     attributes:
       user:
         full_name: 'Nome completo'
@@ -75,3 +78,7 @@ pt-BR:
       refusal_response:
         reason: 'Motivo da Recusa'
         refuser: 'Recusador'
+      proposal_response:
+        message: 'Mensagem'
+        salary_proposal: 'Proposta salarial'
+        start_date: 'Data de início'

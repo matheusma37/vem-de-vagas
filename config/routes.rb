@@ -17,6 +17,7 @@ Rails.application.routes.draw do
         resources :responses, only: %i[] do
           member do
             post :refusal
+            post :proposal
           end
         end
       end

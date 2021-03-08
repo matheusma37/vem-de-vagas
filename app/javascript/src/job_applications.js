@@ -1,5 +1,5 @@
-function showCandidatureRefusalForm() {
-  form = document.getElementById('candidature-refusal-form');
+function showForm(id) {
+  form = document.getElementById(id);
   if (form.style.display === "none") {
     form.style.display = "flex";
   }

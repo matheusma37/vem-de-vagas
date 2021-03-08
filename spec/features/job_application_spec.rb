@@ -111,6 +111,42 @@ feature 'User visits the site' do
                                                                               appl_gabriel))
       expect(page).to have_content('Candidatura recusada com sucesso')
       expect(page).to have_content('Status: Recusada')
+      expect(page).not_to have_button('Fazer Proposta')
+      expect(page).not_to have_button('Recusar Candidatura')
+    end
+
+    scenario 'and makes a proposal to an application', js: true do
+      user = create(:user_admin)
+      Company.last.update!(name: 'Codante',
+                           cnpj: '01.987.654/0003-21',
+                           site: 'www.codante.com')
+      programador = create(:opportunity_programmer, min_salary: 1000, max_salary: 3000)
+      gabriel = create(:user_candidate_gabriel)
+      gabriel.candidate_profile.update!(cellphone_number: '00999999999', biography: 'Sei Rails')
+      appl_gabriel = JobApplication.create!(candidate_profile: gabriel.candidate_profile,
+                                            job_opportunity: programador)
+
+      login_as user, scope: :user
+
+      visit root_path
+      click_on 'Minha Empresa'
+      click_on programador.title
+      click_on gabriel.full_name
+      click_on 'Fazer Proposta'
+
+      within('form#candidature-proposal-form') do
+        fill_in 'Mensagem',	with: 'Gostamos do seu perfil e gostaríamos que você trabalhasse conosco.'
+        fill_in 'Proposta salarial', with: 2500.00
+        fill_in 'Data de início',	with: I18n.l(Date.today.advance(months: 1))
+        click_on 'Enviar'
+      end
+
+      expect(current_path).to eq(company_job_opportunity_job_application_path(programador.company,
+                                                                              programador,
+                                                                              appl_gabriel))
+      expect(page).to have_content('Proposta feita com sucesso')
+      expect(page).to have_content('Status: Respondida')
+      expect(page).not_to have_button('Fazer Proposta')
       expect(page).not_to have_button('Recusar Candidatura')
     end
   end

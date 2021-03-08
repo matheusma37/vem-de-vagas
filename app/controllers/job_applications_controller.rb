@@ -6,5 +6,6 @@ class JobApplicationsController < ApplicationController
     @job_application = JobApplication.find(params[:id])
     @candidate = @job_application.candidate_profile
     @refusal_response = RefusalResponse.new
+    @proposal_response = ProposalResponse.new
   end
 end
