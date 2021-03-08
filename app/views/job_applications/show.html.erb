@@ -2,6 +2,14 @@
   <%= "Vaga: #{@job_opportunity.title} - " %>
   <%= link_to @job_opportunity.company.name, company_path(@job_opportunity.company) %>
 </h1>
+
+<p>
+  Status: 
+  <% if @job_application.refused? %>
+    <%= human_attribute_enum(:job_application, :status, @job_application.status) %>
+  <% end %>
+</p>
+
 <p>
   <%= "Faixa salarial: #{number_to_currency(@job_opportunity.min_salary)} - #{number_to_currency(@job_opportunity.max_salary)}" %>
 </p>
@@ -20,3 +28,22 @@
 <p>
   <%= number_to_phone(@candidate.cellphone_number, pattern: /(\d{2})(\d{5})(\d{4})$/, area_code: true) %>
 </p>
+
+<% unless @job_application.refused? %>
+  <% if @job_opportunity.company.employee?(current_user) %>
+    <button onclick='showCandidatureRefusalForm()'>Recusar Candidatura</button>
+    <%= form_with model: @refusal_response,
+              url: refusal_company_job_opportunity_job_application_response_path(
+                @job_opportunity.company,
+                @job_opportunity,
+                @job_application
+              ), style: 'display: none;', id: 'candidature-refusal-form' do |f| %>
+      <%= f.hidden_field :refuser, value: 'company' %>
+      <div>
+        <%= f.label :reason %>
+        <%= f.text_area :reason %>
+      </div>
+      <%= f.submit 'Enviar' %>
+    <% end %>
+  <% end %>
+<% end %>

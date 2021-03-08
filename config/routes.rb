@@ -13,7 +13,13 @@ Rails.application.routes.draw do
         post :disable
         post :apply
       end
-      resources :job_applications, only: %i[show]
+      resources :job_applications, only: %i[show] do
+        resources :responses, only: %i[] do
+          member do
+            post :refusal
+          end
+        end
+      end
     end
   end
 

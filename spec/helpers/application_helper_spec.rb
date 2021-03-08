@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe JobOpportunityHelper do
+describe ApplicationHelper do
   context '#human_attribute_enum' do
     it 'translates JobOpportunity enum attributes' do
       expect(helper.human_attribute_enum(
@@ -32,6 +32,34 @@ describe JobOpportunityHelper do
                :status,
                :disable
              )).to eql('Desabilitada')
+    end
+
+    it 'translates JobApplication enum attributes' do
+      expect(helper.human_attribute_enum(
+               :job_application,
+               :status,
+               :sended
+             )).to eql('Enviada')
+      expect(helper.human_attribute_enum(
+               :job_application,
+               :status,
+               :saw
+             )).to eql('Vista')
+      expect(helper.human_attribute_enum(
+               :job_application,
+               :status,
+               :responded
+             )).to eql('Respondida')
+      expect(helper.human_attribute_enum(
+               :job_application,
+               :status,
+               :refused
+             )).to eql('Recusada')
+      expect(helper.human_attribute_enum(
+               :job_application,
+               :status,
+               :closed
+             )).to eql('Finalizada')
     end
   end
 end

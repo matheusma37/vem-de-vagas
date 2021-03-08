@@ -13,12 +13,18 @@ pt-BR:
       job_opportunity:
         one: 'Vaga'
         other: 'Vagas'
+      job_application:
+        one: 'Candidatura'
+        other: 'Candidaturas'
       candidate_profile:
         one: 'Candidato'
         other: 'Candidatos'
       user:
         one: 'Usuário'
         other: 'Usuários'
+      refusal_response:
+        one: 'Resposta de Recusa'
+        other: 'Respostas de Recusa'
     attributes:
       user:
         full_name: 'Nome completo'
@@ -54,9 +60,18 @@ pt-BR:
         junior: 'Júnior'
         pleno: 'Pleno'
         senior: 'Sênior'
+      job_application/status:
+        sended: 'Enviada'
+        saw: 'Vista'
+        responded: 'Respondida'
+        refused: 'Recusada'
+        closed: 'Finalizada'
       employee_profile:
         role: 'Papel'
         employee_code: 'Código de funcionário'
       candidate_profile:
         biography: 'Biografia'
         cellphone_number: 'Número de celular'
+      refusal_response:
+        reason: 'Motivo da Recusa'
+        refuser: 'Recusador'
