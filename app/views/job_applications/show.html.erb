@@ -4,13 +4,7 @@
 </h1>
 
 <p>
-  Status: 
-  <% if @job_application.refused? %>
-    <%= human_attribute_enum(:job_application, :status, @job_application.status) %>
-  <% end %>
-  <% if @job_application.responded? %>
-    <%= human_attribute_enum(:job_application, :status, @job_application.status) %>
-  <% end %>
+  Status: <%= human_attribute_enum(:job_application, :status, @job_application.status) %>
 </p>
 
 <p>

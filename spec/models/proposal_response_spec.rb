@@ -8,6 +8,6 @@ RSpec.describe ProposalResponse, type: :model do
   it { should allow_value(Date.today).for(:start_date) }
   it { should allow_value(Date.today.advance(days: 1)).for(:start_date) }
   it { should allow_value(Date.today.advance(months: 1)).for(:start_date) }
-  it { should_not allow_value(1.day.ago).for(:start_date) }
-  it { should_not allow_value(1.month.ago).for(:start_date) }
+  it { should_not allow_value(Date.today.ago(1.day)).for(:start_date) }
+  it { should_not allow_value(Date.today.ago(1.month)).for(:start_date) }
 end
