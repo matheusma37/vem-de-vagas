@@ -4,8 +4,7 @@ class JobOpportunitiesController < ApplicationController
   def show
     @job_opportunity = JobOpportunity.find(params[:id])
     @company = @job_opportunity.company
-    return redirect_to root_path if !@job_opportunity&.company&.employee?(current_user) && @job_opportunity.nil?
-    return redirect_to root_path if !@job_opportunity&.company&.employee?(current_user) && @job_opportunity.disable?
+    return redirect_to root_path unless job_opportunity_valid?
   end
 
   def new
@@ -77,5 +76,14 @@ class JobOpportunitiesController < ApplicationController
   def company_employee?
     company = Company.find(params[:company_id])
     return redirect_to root_path unless company.employee?(current_user)
+  end
+
+  def job_opportunity_valid?
+    if !@job_opportunity&.company&.employee?(current_user) &&
+       (@job_opportunity.nil? || @job_opportunity.disable?)
+      return false
+    end
+
+    true
   end
 end

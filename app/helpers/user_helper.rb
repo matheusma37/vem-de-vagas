@@ -6,7 +6,7 @@ module UserHelper
                              @excite.com @lycos.com @mail.ru @inbox.ru
                              @list.ru @bk.ru @internet.ru @mailfence.com
                              @rackspace.com @rediffmail.com @runbox.com
-                             @tiscali.com @hushmail.com @example.com @hotmail.com]
+                             @tiscali.com @hushmail.com @example.com @hotmail.com].freeze
 
   def personal_mail?(mail)
     PERSONAL_MAIL_DOMAINS.include?(mail.scan(/(?:@)\w+\.\w{2,4}/).first)

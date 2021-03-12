@@ -1,3 +1,28 @@
+# == Schema Information
+#
+# Table name: job_opportunities
+#
+#  id                      :integer          not null, primary key
+#  application_deadline    :date
+#  description             :text
+#  max_salary              :float            default(0.0), not null
+#  min_salary              :float            default(0.0), not null
+#  professional_level      :integer          default("junior"), not null
+#  status                  :integer          default("enable"), not null
+#  title                   :string           not null
+#  total_job_opportunities :integer          not null
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  company_id              :integer          not null
+#
+# Indexes
+#
+#  index_job_opportunities_on_company_id  (company_id)
+#
+# Foreign Keys
+#
+#  company_id  (company_id => companies.id)
+#
 class JobOpportunity < ApplicationRecord
   after_find :updates_status
 

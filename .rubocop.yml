@@ -1,0 +1,44 @@
+AllCops:
+  Include:
+    - 'app/controllers/*.rb'
+    - 'app/channels/*.rb'
+    - 'app/helpers/*.rb'
+    - 'app/jobs/*.rb'
+    - 'app/mailers/*.rb'
+    - 'app/models/*.rb'
+    - 'app/views/*.rb'
+    - 'lib/**/*.rb'
+  Exclude:
+    - 'bin/**'
+    - 'node_modules/**/*'
+    - 'tmp/**/*'
+    - 'vendor/**/*'
+    - '.git/**/*'
+  TargetRubyVersion: 2.7
+
+Bundler/DuplicatedGem:
+  Description: 'Checks for duplicate gem entries in Gemfile.'
+  Enabled: true
+  Include:
+    - '**/*.gemfile'
+    - '**/Gemfile'
+    - '**/gems.rb'
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/BlockComments:
+  Enabled: false
+  Include:
+    - 'spec/**/*.rb'
+
+Style/Documentation:
+  Enabled: false
+  Include:
+    - 'app/models/*.rb'
+    - 'app/helpers/*.rb'
+
+Metrics/BlockLength:
+  Enabled: false
+  Include:
+    - 'spec/**/*.rb'

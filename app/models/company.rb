@@ -1,3 +1,27 @@
+# == Schema Information
+#
+# Table name: companies
+#
+#  id            :integer          not null, primary key
+#  address       :string
+#  cnpj          :string
+#  creation_date :date
+#  description   :text
+#  email_domain  :string           not null
+#  name          :string
+#  site          :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  user_id       :integer          not null
+#
+# Indexes
+#
+#  index_companies_on_user_id  (user_id)
+#
+# Foreign Keys
+#
+#  user_id  (user_id => users.id)
+#
 class Company < ApplicationRecord
   belongs_to :admin, class_name: 'User', foreign_key: 'user_id'
 

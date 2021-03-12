@@ -1,3 +1,22 @@
+# == Schema Information
+#
+# Table name: candidate_profiles
+#
+#  id               :integer          not null, primary key
+#  biography        :text
+#  cellphone_number :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  user_id          :integer          not null
+#
+# Indexes
+#
+#  index_candidate_profiles_on_user_id  (user_id)
+#
+# Foreign Keys
+#
+#  user_id  (user_id => users.id)
+#
 class CandidateProfile < ApplicationRecord
   belongs_to :user
   has_many :job_applications

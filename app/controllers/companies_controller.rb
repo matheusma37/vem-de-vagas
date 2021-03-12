@@ -33,9 +33,9 @@ class CompaniesController < ApplicationController
   private
 
   def admin?
-    unless current_user.admin?
-      redirect_to company_path(current_user.company),
-                  alert: 'Apenas o administrador pode editar as informações da empresa'
-    end
+    return if current_user.admin?
+
+    redirect_to company_path(current_user.company),
+                alert: 'Apenas o administrador pode editar as informações da empresa'
   end
 end
